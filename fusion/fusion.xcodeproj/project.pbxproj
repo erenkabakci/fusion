@@ -65,6 +65,9 @@
 		3AE34B0D23F2056B00B453D7 = {
 			isa = PBXGroup;
 			children = (
+				3AE34B1A23F2056B00B453D7 /* fusion.h */,
+				3AE34B1B23F2056B00B453D7 /* Info.plist */,
+				3AE34B3B23F21B7500B453D7 /* Source */,
 				3AE34B1923F2056B00B453D7 /* fusion */,
 				3AE34B2423F2056B00B453D7 /* fusionTests */,
 				3AE34B1823F2056B00B453D7 /* Products */,
@@ -83,9 +86,6 @@
 		3AE34B1923F2056B00B453D7 /* fusion */ = {
 			isa = PBXGroup;
 			children = (
-				3AE34B3B23F21B7500B453D7 /* Source */,
-				3AE34B1A23F2056B00B453D7 /* fusion.h */,
-				3AE34B1B23F2056B00B453D7 /* Info.plist */,
 			);
 			path = fusion;
 			sourceTree = "<group>";
