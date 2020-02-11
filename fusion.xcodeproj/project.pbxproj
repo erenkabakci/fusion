@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A71BE6823F2B372009D092E /* HttpHeaderModifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE6723F2B372009D092E /* HttpHeaderModifiable.swift */; };
 		3AE34B2123F2056B00B453D7 /* fusion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AE34B1723F2056B00B453D7 /* fusion.framework */; };
 		3AE34B2623F2056B00B453D7 /* fusionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B2523F2056B00B453D7 /* fusionTests.swift */; };
 		3AE34B2823F2056B00B453D7 /* fusion.h in Headers */ = {isa = PBXBuildFile; fileRef = 3AE34B1A23F2056B00B453D7 /* fusion.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -31,20 +32,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3A71BE6723F2B372009D092E /* HttpHeaderModifiable.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = HttpHeaderModifiable.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3AE34B1723F2056B00B453D7 /* fusion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = fusion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AE34B1A23F2056B00B453D7 /* fusion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fusion.h; sourceTree = "<group>"; };
 		3AE34B1B23F2056B00B453D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3AE34B2023F2056B00B453D7 /* fusionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = fusionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AE34B2523F2056B00B453D7 /* fusionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fusionTests.swift; sourceTree = "<group>"; };
 		3AE34B2723F2056B00B453D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3AE34B3123F211B500B453D7 /* SessionPublisherProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionPublisherProtocol.swift; sourceTree = "<group>"; };
-		3AE34B3323F2124100B453D7 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
-		3AE34B3523F2143900B453D7 /* WebServiceExecutable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceExecutable.swift; sourceTree = "<group>"; };
-		3AE34B3723F214C100B453D7 /* PublicWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicWebService.swift; sourceTree = "<group>"; };
-		3AE34B3923F2197300B453D7 /* CustomDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDecodable.swift; sourceTree = "<group>"; };
-		3AE34B3C23F21BA000B453D7 /* StatusCodeResolvable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusCodeResolvable.swift; sourceTree = "<group>"; };
-		3AE34B3E23F2232100B453D7 /* AuthenticatedWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedWebService.swift; sourceTree = "<group>"; };
-		3AE34B4223F2245A00B453D7 /* AuthenticationTokenProvidable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationTokenProvidable.swift; sourceTree = "<group>"; };
+		3AE34B3123F211B500B453D7 /* SessionPublisherProtocol.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = SessionPublisherProtocol.swift; sourceTree = "<group>"; tabWidth = 2; };
+		3AE34B3323F2124100B453D7 /* NetworkError.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; tabWidth = 2; };
+		3AE34B3523F2143900B453D7 /* WebServiceExecutable.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = WebServiceExecutable.swift; sourceTree = "<group>"; tabWidth = 2; };
+		3AE34B3723F214C100B453D7 /* PublicWebService.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = PublicWebService.swift; sourceTree = "<group>"; tabWidth = 2; };
+		3AE34B3923F2197300B453D7 /* CustomDecodable.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = CustomDecodable.swift; sourceTree = "<group>"; tabWidth = 2; };
+		3AE34B3C23F21BA000B453D7 /* StatusCodeResolvable.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = StatusCodeResolvable.swift; sourceTree = "<group>"; tabWidth = 2; };
+		3AE34B3E23F2232100B453D7 /* AuthenticatedWebService.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = AuthenticatedWebService.swift; sourceTree = "<group>"; tabWidth = 2; };
+		3AE34B4223F2245A00B453D7 /* AuthenticationTokenProvidable.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = AuthenticationTokenProvidable.swift; sourceTree = "<group>"; tabWidth = 2; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +74,6 @@
 				3AE34B1A23F2056B00B453D7 /* fusion.h */,
 				3AE34B1B23F2056B00B453D7 /* Info.plist */,
 				3AE34B3B23F21B7500B453D7 /* Source */,
-				3AE34B1923F2056B00B453D7 /* fusion */,
 				3AE34B2423F2056B00B453D7 /* fusionTests */,
 				3AE34B1823F2056B00B453D7 /* Products */,
 			);
@@ -85,13 +86,6 @@
 				3AE34B2023F2056B00B453D7 /* fusionTests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		3AE34B1923F2056B00B453D7 /* fusion */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = fusion;
 			sourceTree = "<group>";
 		};
 		3AE34B2423F2056B00B453D7 /* fusionTests */ = {
@@ -111,6 +105,7 @@
 				3AE34B3523F2143900B453D7 /* WebServiceExecutable.swift */,
 				3AE34B3923F2197300B453D7 /* CustomDecodable.swift */,
 				3AE34B3C23F21BA000B453D7 /* StatusCodeResolvable.swift */,
+				3A71BE6723F2B372009D092E /* HttpHeaderModifiable.swift */,
 				3AE34B4123F2235F00B453D7 /* PublicWebService */,
 				3AE34B4023F2235500B453D7 /* AuthenticatedWebService */,
 			);
@@ -247,6 +242,7 @@
 				3AE34B3A23F2197300B453D7 /* CustomDecodable.swift in Sources */,
 				3AE34B3D23F21BA000B453D7 /* StatusCodeResolvable.swift in Sources */,
 				3AE34B3223F211B500B453D7 /* SessionPublisherProtocol.swift in Sources */,
+				3A71BE6823F2B372009D092E /* HttpHeaderModifiable.swift in Sources */,
 				3AE34B3F23F2232100B453D7 /* AuthenticatedWebService.swift in Sources */,
 				3AE34B3423F2124100B453D7 /* NetworkError.swift in Sources */,
 				3AE34B3623F2143900B453D7 /* WebServiceExecutable.swift in Sources */,

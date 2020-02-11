@@ -1,5 +1,5 @@
 //
-//  AuthenticationTokenProvidable.swift
+//  HttpHeaderModifiable.swift
 //  fusion
 //
 //  Copyright (c) 2020 Eren Kabakçı
@@ -22,12 +22,8 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-import Combine
 import Foundation
 
-public protocol AuthenticationTokenProvidable: AnyObject {
-  var accessToken: CurrentValueSubject<String?, Never> { get }
-  func reissueAccessToken()
-  func invalidateAccessToken()
-  func invalidateRefreshToken()
+public protocol HttpHeaderModifiable: AnyObject {
+  var defaultHttpHeaders: [String: String] { get set }
 }

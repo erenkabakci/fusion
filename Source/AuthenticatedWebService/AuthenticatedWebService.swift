@@ -22,40 +22,77 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-
 import Combine
 import Foundation
 
 open class AuthenticatedWebService: PublicWebService {
   private let authenticationQueue = DispatchQueue(label: "authentication.queue", attributes: .concurrent)
   private let tokenProvider: AuthenticationTokenProvidable
-
+  
   init(urlSession: SessionPublisherProtocol = URLSession(configuration: URLSessionConfiguration.ephemeral,
-                                                          delegate: nil,
-                                                          delegateQueue: nil),
-              tokenProvider: AuthenticationTokenProvidable) {
-      self.tokenProvider = tokenProvider
-      super.init(urlSession: urlSession)
+                                                         delegate: nil,
+                                                         delegateQueue: nil),
+       tokenProvider: AuthenticationTokenProvidable) {
+    self.tokenProvider = tokenProvider
+    super.init(urlSession: urlSession)
   }
-
+  
   override public func execute<T>(urlRequest: URLRequest) -> AnyPublisher<T, NetworkError> where T : Decodable {
+    var urlRequest = urlRequest
+    var currentAccessToken: String?
+    
     authenticationQueue.sync {
-                // Append the authorization header
-                _ = self.tokenProvider.accessToken
-            }
-
+      currentAccessToken = self.tokenProvider.accessToken.value
+    }
+    
+    guard let accessToken = currentAccessToken else {
+      return Fail<T, NetworkError>(error: NetworkError.unauthorized).eraseToAnyPublisher()
+    }
+    
+    urlRequest.addValue(accessToken, forHTTPHeaderField: "Authorization")
+    
     return super.execute(urlRequest: urlRequest)
-                .catch { error -> AnyPublisher<T, NetworkError> in
-
-    //                if self.authenticationEnabled,
-    //                    self.tokenHandler.accessToken == nil {
-    //                    self.authenticationQueue.sync(flags: .barrier) {
-    //                        self.tokenHandler.refreshToken()
-    //                    }
-    //                    return self.dataTask(request: request)
-    //                }
-                    // if authentication error and first try, try again by refreshing the token and updating, else report the error
-                    Fail<T, NetworkError>(error: error).eraseToAnyPublisher()
-                }.eraseToAnyPublisher()
+      .catch { error -> AnyPublisher<T, NetworkError> in
+        if error == .unauthorized {
+          self.authenticationQueue.sync(flags: .barrier) {
+            self.tokenProvider.invalidateAccessToken()
+            self.tokenProvider.reissueAccessToken()
+          }
+          return self.execute(urlRequest: urlRequest)
+            .delay(for: 0.5, scheduler: DispatchQueue.global())
+            .eraseToAnyPublisher()
+        }
+        return Fail<T, NetworkError>(error: error).eraseToAnyPublisher()
+    }.eraseToAnyPublisher()
+  }
+  
+  
+  override public func execute(urlRequest: URLRequest) -> AnyPublisher<Void, NetworkError> {
+    var urlRequest = urlRequest
+    var currentAccessToken: String?
+    
+    authenticationQueue.sync {
+      currentAccessToken = self.tokenProvider.accessToken.value
+    }
+    
+    guard let accessToken = currentAccessToken else {
+      return Fail<Void, NetworkError>(error: NetworkError.unauthorized).eraseToAnyPublisher()
+    }
+    
+    urlRequest.addValue(accessToken, forHTTPHeaderField: "Authorization")
+    
+    return super.execute(urlRequest: urlRequest)
+      .catch { error -> AnyPublisher<Void, NetworkError> in
+        if error == .unauthorized {
+          self.authenticationQueue.sync(flags: .barrier) {
+            self.tokenProvider.invalidateAccessToken()
+            self.tokenProvider.reissueAccessToken()
+          }
+          return self.execute(urlRequest: urlRequest)
+            .delay(for: 0.5, scheduler: DispatchQueue.global())
+            .eraseToAnyPublisher()
+        }
+        return Fail<Void, NetworkError>(error: error).eraseToAnyPublisher()
+    }.eraseToAnyPublisher()
   }
 }

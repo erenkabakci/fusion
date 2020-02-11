@@ -25,17 +25,18 @@
 import Combine
 import Foundation
 
-open class PublicWebService: WebServiceExecutable, StatusCodeResolvable, CustomDecodable {
+open class PublicWebService: WebServiceExecutable, HttpHeaderModifiable ,StatusCodeResolvable, CustomDecodable {
+  public var defaultHttpHeaders: [String : String] = [:]
   public let jsonDecoder: JSONDecoder = JSONDecoder()
   private let session: SessionPublisherProtocol
   open var subscriptions = Set<AnyCancellable>()
-
+  
   public init(urlSession: SessionPublisherProtocol = URLSession(configuration: URLSessionConfiguration.ephemeral,
                                                                 delegate: nil,
                                                                 delegateQueue: nil)) {
     session = urlSession
   }
-
+  
   public func execute<T>(urlRequest: URLRequest) -> AnyPublisher<T, NetworkError> where T : Decodable {
     Deferred {
       Future { [weak self] promise in
@@ -43,7 +44,12 @@ open class PublicWebService: WebServiceExecutable, StatusCodeResolvable, CustomD
           promise(.failure(NetworkError.unknown))
           return
         }
-
+        
+        var urlRequest: URLRequest = urlRequest
+        for (key, value) in self.defaultHttpHeaders {
+          urlRequest.addValue(value, forHTTPHeaderField: key)
+        }
+        
         self.session.dataTaskPublisher(for: urlRequest)
           .tryMap {
             guard let httpResponse = $0.response as? HTTPURLResponse else {
@@ -62,7 +68,7 @@ open class PublicWebService: WebServiceExecutable, StatusCodeResolvable, CustomD
       }
     }.eraseToAnyPublisher()
   }
-
+  
   public func execute(urlRequest: URLRequest) -> AnyPublisher<Void, NetworkError> {
     Deferred {
       Future { [weak self] promise in
@@ -70,7 +76,12 @@ open class PublicWebService: WebServiceExecutable, StatusCodeResolvable, CustomD
           promise(.failure(NetworkError.unknown))
           return
         }
-
+        
+        var urlRequest: URLRequest = urlRequest
+        for (key, value) in self.defaultHttpHeaders {
+          urlRequest.addValue(value, forHTTPHeaderField: key)
+        }
+        
         self.session.dataTaskPublisher(for: urlRequest)
           .tryMap {
             guard let httpResponse = $0.response as? HTTPURLResponse else {
@@ -89,20 +100,20 @@ open class PublicWebService: WebServiceExecutable, StatusCodeResolvable, CustomD
       }
     }.eraseToAnyPublisher()
   }
-
+  
   public func mapHttpResponseCodes(httpResponse: HTTPURLResponse) throws {
     switch httpResponse.statusCode {
-      case 200 ... 299:
-        break
-      case 401:
-        throw NetworkError.unauthorized
-      case 403:
-        throw NetworkError.forbidden
-      default:
-        throw NetworkError.generic(httpResponse.statusCode)
+    case 200 ... 299:
+      break
+    case 401:
+      throw NetworkError.unauthorized
+    case 403:
+      throw NetworkError.forbidden
+    default:
+      throw NetworkError.generic(httpResponse.statusCode)
     }
   }
-
+  
   public func decode<T>(data: Data, type _: T.Type) throws -> T where T : Decodable {
     do {
       return try jsonDecoder.decode(T.self, from: data)
