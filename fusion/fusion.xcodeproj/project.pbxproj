@@ -16,6 +16,8 @@
 		3AE34B3823F214C100B453D7 /* PublicWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3723F214C100B453D7 /* PublicWebService.swift */; };
 		3AE34B3A23F2197300B453D7 /* CustomDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3923F2197300B453D7 /* CustomDecodable.swift */; };
 		3AE34B3D23F21BA000B453D7 /* StatusCodeResolvable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3C23F21BA000B453D7 /* StatusCodeResolvable.swift */; };
+		3AE34B3F23F2232100B453D7 /* AuthenticatedWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3E23F2232100B453D7 /* AuthenticatedWebService.swift */; };
+		3AE34B4323F2245A00B453D7 /* AuthenticationTokenProvidable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B4223F2245A00B453D7 /* AuthenticationTokenProvidable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +43,8 @@
 		3AE34B3723F214C100B453D7 /* PublicWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicWebService.swift; sourceTree = "<group>"; };
 		3AE34B3923F2197300B453D7 /* CustomDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDecodable.swift; sourceTree = "<group>"; };
 		3AE34B3C23F21BA000B453D7 /* StatusCodeResolvable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusCodeResolvable.swift; sourceTree = "<group>"; };
+		3AE34B3E23F2232100B453D7 /* AuthenticatedWebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatedWebService.swift; sourceTree = "<group>"; };
+		3AE34B4223F2245A00B453D7 /* AuthenticationTokenProvidable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationTokenProvidable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,9 +111,27 @@
 				3AE34B3523F2143900B453D7 /* WebServiceExecutable.swift */,
 				3AE34B3923F2197300B453D7 /* CustomDecodable.swift */,
 				3AE34B3C23F21BA000B453D7 /* StatusCodeResolvable.swift */,
-				3AE34B3723F214C100B453D7 /* PublicWebService.swift */,
+				3AE34B4123F2235F00B453D7 /* PublicWebService */,
+				3AE34B4023F2235500B453D7 /* AuthenticatedWebService */,
 			);
 			path = Source;
+			sourceTree = "<group>";
+		};
+		3AE34B4023F2235500B453D7 /* AuthenticatedWebService */ = {
+			isa = PBXGroup;
+			children = (
+				3AE34B3E23F2232100B453D7 /* AuthenticatedWebService.swift */,
+				3AE34B4223F2245A00B453D7 /* AuthenticationTokenProvidable.swift */,
+			);
+			path = AuthenticatedWebService;
+			sourceTree = "<group>";
+		};
+		3AE34B4123F2235F00B453D7 /* PublicWebService */ = {
+			isa = PBXGroup;
+			children = (
+				3AE34B3723F214C100B453D7 /* PublicWebService.swift */,
+			);
+			path = PublicWebService;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -225,9 +247,11 @@
 				3AE34B3A23F2197300B453D7 /* CustomDecodable.swift in Sources */,
 				3AE34B3D23F21BA000B453D7 /* StatusCodeResolvable.swift in Sources */,
 				3AE34B3223F211B500B453D7 /* SessionPublisherProtocol.swift in Sources */,
+				3AE34B3F23F2232100B453D7 /* AuthenticatedWebService.swift in Sources */,
 				3AE34B3423F2124100B453D7 /* NetworkError.swift in Sources */,
 				3AE34B3623F2143900B453D7 /* WebServiceExecutable.swift in Sources */,
 				3AE34B3823F214C100B453D7 /* PublicWebService.swift in Sources */,
+				3AE34B4323F2245A00B453D7 /* AuthenticationTokenProvidable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -379,7 +403,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = fusion/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -405,7 +429,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = fusion/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
