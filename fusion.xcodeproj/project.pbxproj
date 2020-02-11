@@ -8,8 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		3A71BE6823F2B372009D092E /* HttpHeaderModifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE6723F2B372009D092E /* HttpHeaderModifiable.swift */; };
+		3A71BE6A23F3489C009D092E /* PublicWebServiceHappyPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE6923F3489C009D092E /* PublicWebServiceHappyPathTests.swift */; };
+		3A71BE6C23F34BCA009D092E /* MockSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE6B23F34BCA009D092E /* MockSession.swift */; };
+		3A71BE6E23F3504F009D092E /* SampleResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE6D23F3504F009D092E /* SampleResponse.swift */; };
+		3A71BE7123F35911009D092E /* PublicWebServiceHttpStatusCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE7023F35911009D092E /* PublicWebServiceHttpStatusCodeTests.swift */; };
+		3A71BE7323F35DA4009D092E /* PublicWebServiceStreamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE7223F35DA4009D092E /* PublicWebServiceStreamTests.swift */; };
 		3AE34B2123F2056B00B453D7 /* fusion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AE34B1723F2056B00B453D7 /* fusion.framework */; };
-		3AE34B2623F2056B00B453D7 /* fusionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B2523F2056B00B453D7 /* fusionTests.swift */; };
 		3AE34B2823F2056B00B453D7 /* fusion.h in Headers */ = {isa = PBXBuildFile; fileRef = 3AE34B1A23F2056B00B453D7 /* fusion.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3AE34B3223F211B500B453D7 /* SessionPublisherProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3123F211B500B453D7 /* SessionPublisherProtocol.swift */; };
 		3AE34B3423F2124100B453D7 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3323F2124100B453D7 /* NetworkError.swift */; };
@@ -33,11 +37,15 @@
 
 /* Begin PBXFileReference section */
 		3A71BE6723F2B372009D092E /* HttpHeaderModifiable.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = HttpHeaderModifiable.swift; sourceTree = "<group>"; tabWidth = 2; };
+		3A71BE6923F3489C009D092E /* PublicWebServiceHappyPathTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = PublicWebServiceHappyPathTests.swift; sourceTree = "<group>"; tabWidth = 2; };
+		3A71BE6B23F34BCA009D092E /* MockSession.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = MockSession.swift; sourceTree = "<group>"; tabWidth = 2; };
+		3A71BE6D23F3504F009D092E /* SampleResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleResponse.swift; sourceTree = "<group>"; };
+		3A71BE7023F35911009D092E /* PublicWebServiceHttpStatusCodeTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = PublicWebServiceHttpStatusCodeTests.swift; sourceTree = "<group>"; tabWidth = 2; };
+		3A71BE7223F35DA4009D092E /* PublicWebServiceStreamTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = PublicWebServiceStreamTests.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3AE34B1723F2056B00B453D7 /* fusion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = fusion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AE34B1A23F2056B00B453D7 /* fusion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fusion.h; sourceTree = "<group>"; };
 		3AE34B1B23F2056B00B453D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3AE34B2023F2056B00B453D7 /* fusionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = fusionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3AE34B2523F2056B00B453D7 /* fusionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fusionTests.swift; sourceTree = "<group>"; };
 		3AE34B2723F2056B00B453D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3AE34B3123F211B500B453D7 /* SessionPublisherProtocol.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = SessionPublisherProtocol.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3AE34B3323F2124100B453D7 /* NetworkError.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; tabWidth = 2; };
@@ -68,13 +76,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A71BE6F23F358E8009D092E /* PublicWebService */ = {
+			isa = PBXGroup;
+			children = (
+				3A71BE6923F3489C009D092E /* PublicWebServiceHappyPathTests.swift */,
+				3A71BE7023F35911009D092E /* PublicWebServiceHttpStatusCodeTests.swift */,
+				3A71BE7223F35DA4009D092E /* PublicWebServiceStreamTests.swift */,
+			);
+			path = PublicWebService;
+			sourceTree = "<group>";
+		};
 		3AE34B0D23F2056B00B453D7 = {
 			isa = PBXGroup;
 			children = (
 				3AE34B1A23F2056B00B453D7 /* fusion.h */,
 				3AE34B1B23F2056B00B453D7 /* Info.plist */,
 				3AE34B3B23F21B7500B453D7 /* Source */,
-				3AE34B2423F2056B00B453D7 /* fusionTests */,
+				3AE34B2423F2056B00B453D7 /* Tests */,
 				3AE34B1823F2056B00B453D7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,13 +106,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3AE34B2423F2056B00B453D7 /* fusionTests */ = {
+		3AE34B2423F2056B00B453D7 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				3AE34B2523F2056B00B453D7 /* fusionTests.swift */,
+				3A71BE6F23F358E8009D092E /* PublicWebService */,
 				3AE34B2723F2056B00B453D7 /* Info.plist */,
+				3A71BE6B23F34BCA009D092E /* MockSession.swift */,
+				3A71BE6D23F3504F009D092E /* SampleResponse.swift */,
 			);
-			path = fusionTests;
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		3AE34B3B23F21B7500B453D7 /* Source */ = {
@@ -195,6 +215,7 @@
 					};
 					3AE34B1F23F2056B00B453D7 = {
 						CreatedOnToolsVersion = 11.3.1;
+						LastSwiftMigration = 1130;
 					};
 				};
 			};
@@ -255,7 +276,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3AE34B2623F2056B00B453D7 /* fusionTests.swift in Sources */,
+				3A71BE7123F35911009D092E /* PublicWebServiceHttpStatusCodeTests.swift in Sources */,
+				3A71BE6C23F34BCA009D092E /* MockSession.swift in Sources */,
+				3A71BE6A23F3489C009D092E /* PublicWebServiceHappyPathTests.swift in Sources */,
+				3A71BE7323F35DA4009D092E /* PublicWebServiceStreamTests.swift in Sources */,
+				3A71BE6E23F3504F009D092E /* SampleResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -445,8 +470,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = fusionTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -454,6 +480,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fusionTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -463,8 +490,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = fusionTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
