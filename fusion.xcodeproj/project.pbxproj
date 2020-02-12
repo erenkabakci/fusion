@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,7 @@
 		3A71BE6E23F3504F009D092E /* SampleResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE6D23F3504F009D092E /* SampleResponse.swift */; };
 		3A71BE7123F35911009D092E /* PublicWebServiceHttpStatusCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE7023F35911009D092E /* PublicWebServiceHttpStatusCodeTests.swift */; };
 		3A71BE7323F35DA4009D092E /* PublicWebServiceStreamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE7223F35DA4009D092E /* PublicWebServiceStreamTests.swift */; };
+		3A7DD7C823F441C9001AED72 /* EntwineTest in Frameworks */ = {isa = PBXBuildFile; productRef = 3A7DD7C723F441C9001AED72 /* EntwineTest */; };
 		3AE34B2123F2056B00B453D7 /* fusion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AE34B1723F2056B00B453D7 /* fusion.framework */; };
 		3AE34B2823F2056B00B453D7 /* fusion.h in Headers */ = {isa = PBXBuildFile; fileRef = 3AE34B1A23F2056B00B453D7 /* fusion.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3AE34B3223F211B500B453D7 /* SessionPublisherProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3123F211B500B453D7 /* SessionPublisherProtocol.swift */; };
@@ -70,6 +71,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3AE34B2123F2056B00B453D7 /* fusion.framework in Frameworks */,
+				3A7DD7C823F441C9001AED72 /* EntwineTest in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -195,6 +197,9 @@
 				3AE34B2323F2056B00B453D7 /* PBXTargetDependency */,
 			);
 			name = fusionTests;
+			packageProductDependencies = (
+				3A7DD7C723F441C9001AED72 /* EntwineTest */,
+			);
 			productName = fusionTests;
 			productReference = 3AE34B2023F2056B00B453D7 /* fusionTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -228,6 +233,9 @@
 				Base,
 			);
 			mainGroup = 3AE34B0D23F2056B00B453D7;
+			packageReferences = (
+				3A7DD7C623F441C9001AED72 /* XCRemoteSwiftPackageReference "Entwine" */,
+			);
 			productRefGroup = 3AE34B1823F2056B00B453D7 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -536,6 +544,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3A7DD7C623F441C9001AED72 /* XCRemoteSwiftPackageReference "Entwine" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tcldr/Entwine.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.8.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3A7DD7C723F441C9001AED72 /* EntwineTest */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3A7DD7C623F441C9001AED72 /* XCRemoteSwiftPackageReference "Entwine" */;
+			productName = EntwineTest;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3AE34B0E23F2056B00B453D7 /* Project object */;
 }
