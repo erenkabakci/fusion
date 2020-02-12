@@ -59,7 +59,7 @@ open class AuthenticatedWebService: PublicWebService {
             self.tokenProvider.reissueAccessToken()
           }
           return self.execute(urlRequest: urlRequest)
-            .delay(for: 0.5, scheduler: DispatchQueue.global())
+            .delay(for: 0.2, scheduler: self.authenticationQueue)
             .eraseToAnyPublisher()
         }
         return Fail<T, NetworkError>(error: error).eraseToAnyPublisher()
@@ -74,7 +74,7 @@ open class AuthenticatedWebService: PublicWebService {
     authenticationQueue.sync {
       currentAccessToken = self.tokenProvider.accessToken.value
     }
-    
+
     guard let accessToken = currentAccessToken else {
       return Fail<Void, NetworkError>(error: NetworkError.unauthorized).eraseToAnyPublisher()
     }
@@ -89,7 +89,7 @@ open class AuthenticatedWebService: PublicWebService {
             self.tokenProvider.reissueAccessToken()
           }
           return self.execute(urlRequest: urlRequest)
-            .delay(for: 0.5, scheduler: DispatchQueue.global())
+            .delay(for: 0.2, scheduler: self.authenticationQueue)
             .eraseToAnyPublisher()
         }
         return Fail<Void, NetworkError>(error: error).eraseToAnyPublisher()

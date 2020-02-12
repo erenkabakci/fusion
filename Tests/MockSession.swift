@@ -26,9 +26,9 @@ import Combine
 import Foundation
 @testable import fusion
 
-final class MockSession: SessionPublisherProtocol {
-  typealias StatusCode = Int
-  var result: ((Data, StatusCode)?, URLError?)?
+open class MockSession: SessionPublisherProtocol {
+  public typealias StatusCode = Int
+  open var result: ((Data, StatusCode)?, URLError?)?
   private(set) var methodCallStack: [String] = []
   private(set) var finalUrlRequest: URLRequest?
   
@@ -36,6 +36,7 @@ final class MockSession: SessionPublisherProtocol {
     methodCallStack.append(#function)
     finalUrlRequest = urlRequest
     return Future<(data: Data, response: URLResponse), NetworkError> { promise in
+      usleep(20)
       if let successResponse = self.result?.0 {
         promise(.success((successResponse.0,
                           HTTPURLResponse(url: URL(string: "foo.com")!,

@@ -33,6 +33,7 @@ class PublicWebServiceHappyPathTests: XCTestCase {
   private let encoder = JSONEncoder()
   
   override func setUp() {
+    super.setUp()
     session = MockSession()
     webService = PublicWebService(urlSession: session)
   }

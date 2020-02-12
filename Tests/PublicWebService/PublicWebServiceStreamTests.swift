@@ -32,6 +32,7 @@ class PublicWebServiceStreamTests: XCTestCase {
   private var subscriptions = Set<AnyCancellable>()
   
   override func setUp() {
+    super.setUp()
     session = MockSession()
     webService = PublicWebService(urlSession: session)
   }
