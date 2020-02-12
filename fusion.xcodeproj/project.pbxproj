@@ -91,7 +91,7 @@
 			children = (
 				3AE34B1A23F2056B00B453D7 /* fusion.h */,
 				3AE34B1B23F2056B00B453D7 /* Info.plist */,
-				3AE34B3B23F21B7500B453D7 /* Source */,
+				3AE34B3B23F21B7500B453D7 /* Sources */,
 				3AE34B2423F2056B00B453D7 /* Tests */,
 				3AE34B1823F2056B00B453D7 /* Products */,
 			);
@@ -117,7 +117,7 @@
 			path = Tests;
 			sourceTree = "<group>";
 		};
-		3AE34B3B23F21B7500B453D7 /* Source */ = {
+		3AE34B3B23F21B7500B453D7 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				3AE34B3323F2124100B453D7 /* NetworkError.swift */,
@@ -129,7 +129,7 @@
 				3AE34B4123F2235F00B453D7 /* PublicWebService */,
 				3AE34B4023F2235500B453D7 /* AuthenticatedWebService */,
 			);
-			path = Source;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		3AE34B4023F2235500B453D7 /* AuthenticatedWebService */ = {
