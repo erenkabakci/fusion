@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = "fusion"
-  spec.version      = "1.0"
+  spec.version      = "0.1.0"
   spec.summary      = "reactive network framework for Swift"
   spec.homepage     = "https://github.com/erenkabakci/fusion"
   spec.license      = "MIT"
