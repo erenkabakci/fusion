@@ -26,7 +26,7 @@ import Foundation
 
 public protocol CustomDecodable: AnyObject {
   var jsonDecoder: JSONDecoder { get }
-  func decode<T: Decodable>(data: Data, type _: T.Type) throws -> T
+  func decode<T: Decodable>(data: Data, type: T.Type) throws -> T
 }
 
 extension CustomDecodable {

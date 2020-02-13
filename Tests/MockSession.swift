@@ -32,10 +32,10 @@ open class MockSession: SessionPublisherProtocol {
   private(set) var methodCallStack: [String] = []
   private(set) var finalUrlRequest: URLRequest?
   
-  public func dataTaskPublisher(for urlRequest: URLRequest) -> AnyPublisher<(data: Data, response: URLResponse), NetworkError> {
+  public func dataTaskPublisher(for urlRequest: URLRequest) -> AnyPublisher<(data: Data, response: URLResponse), Error> {
     methodCallStack.append(#function)
     finalUrlRequest = urlRequest
-    return Future<(data: Data, response: URLResponse), NetworkError> { promise in
+    return Future<(data: Data, response: URLResponse), Error> { promise in
       usleep(20)
       if let successResponse = self.result?.0 {
         promise(.success((successResponse.0,

@@ -37,7 +37,7 @@ open class PublicWebService: WebServiceExecutable, HttpHeaderModifiable ,StatusC
     session = urlSession
   }
   
-  public func execute<T>(urlRequest: URLRequest) -> AnyPublisher<T, NetworkError> where T : Decodable {
+  public func execute<T>(urlRequest: URLRequest) -> AnyPublisher<T, Error> where T : Decodable {
     Deferred {
       Future { [weak self] promise in
         guard let self = `self` else {
@@ -69,7 +69,7 @@ open class PublicWebService: WebServiceExecutable, HttpHeaderModifiable ,StatusC
     }.eraseToAnyPublisher()
   }
   
-  public func execute(urlRequest: URLRequest) -> AnyPublisher<Void, NetworkError> {
+  public func execute(urlRequest: URLRequest) -> AnyPublisher<Void, Error> {
     Deferred {
       Future { [weak self] promise in
         guard let self = `self` else {
@@ -114,8 +114,11 @@ open class PublicWebService: WebServiceExecutable, HttpHeaderModifiable ,StatusC
     }
   }
   
-  public func decode<T>(data: Data, type _: T.Type) throws -> T where T : Decodable {
+  public func decode<T>(data: Data, type: T.Type) throws -> T where T : Decodable {
     do {
+      if let data = data as? T {
+        return data
+      }
       return try jsonDecoder.decode(T.self, from: data)
     } catch {
       throw NetworkError.parsingFailure

@@ -40,7 +40,7 @@ class PublicWebServiceStreamTests: XCTestCase {
   // Tests `Deferred` Future usage in the webService
   func test_givenRequest_whenFails_andTerminates_thenShouldBeRetriable() {
     let urlRequest = URLRequest(url: URL(string: "foo.com")!)
-    let execution: AnyPublisher<Void, NetworkError> = webService.execute(urlRequest: urlRequest)
+    let execution: AnyPublisher<Void, Error> = webService.execute(urlRequest: urlRequest)
     var callStack = [String]()
     let expectation = self.expectation(description: "retriable test failed")
     
@@ -64,7 +64,7 @@ class PublicWebServiceStreamTests: XCTestCase {
   
   func test_givenRequest_whenReceivesValue_thenShouldTerminate() {
     let urlRequest = URLRequest(url: URL(string: "foo.com")!)
-    let execution: AnyPublisher<Void, NetworkError> = webService.execute(urlRequest: urlRequest)
+    let execution: AnyPublisher<Void, Error> = webService.execute(urlRequest: urlRequest)
     var callStack = [String]()
     let expectation = self.expectation(description: "retriable test failed")
     

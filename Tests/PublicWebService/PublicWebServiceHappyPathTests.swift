@@ -44,7 +44,7 @@ class PublicWebServiceHappyPathTests: XCTestCase {
     let request = URLRequest(url: URL(string: "foo.com")!)
     webService.defaultHttpHeaders = ["key1": "value1", "key2": "value2"]
     
-    let execution: AnyPublisher<SampleResponse, NetworkError> = webService.execute(urlRequest: request)
+    let execution: AnyPublisher<SampleResponse, Error> = webService.execute(urlRequest: request)
     _ = execution.sink(receiveCompletion: { _ in }, receiveValue: { _ in })
     
     XCTAssertEqual(webService.defaultHttpHeaders, session.finalUrlRequest?.allHTTPHeaderFields)
@@ -55,7 +55,7 @@ class PublicWebServiceHappyPathTests: XCTestCase {
     let request = URLRequest(url: URL(string: "foo.com")!)
     webService.defaultHttpHeaders = ["key3": "value3", "key4": "value4"]
     
-    let execution: AnyPublisher<Void, NetworkError> = webService.execute(urlRequest: request)
+    let execution: AnyPublisher<Void, Error> = webService.execute(urlRequest: request)
     _ = execution.sink(receiveCompletion: { _ in }, receiveValue: { _ in })
     
     XCTAssertEqual(webService.defaultHttpHeaders, session.finalUrlRequest?.allHTTPHeaderFields)
@@ -68,11 +68,11 @@ class PublicWebServiceHappyPathTests: XCTestCase {
     let request = URLRequest(url: URL(string: "foo.com")!)
     session.result = (nil, URLError(.timedOut))
     
-    let execution: AnyPublisher<SampleResponse, NetworkError> = webService.execute(urlRequest: request)
+    let execution: AnyPublisher<SampleResponse, Error> = webService.execute(urlRequest: request)
     let expectation = self.expectation(description: "URLError test failed")
     
     execution.sink(receiveCompletion: { completion in
-      if case let .failure(error) = completion {
+      if case let .failure(error as NetworkError) = completion {
         XCTAssertEqual(error, NetworkError.urlError(URLError(.timedOut)))
         XCTAssertEqual(self.session.methodCallStack, ["dataTaskPublisher(for:)"])
         expectation.fulfill()
@@ -88,11 +88,11 @@ class PublicWebServiceHappyPathTests: XCTestCase {
     let request = URLRequest(url: URL(string: "foo.com")!)
     session.result = (nil, URLError(.timedOut))
     
-    let execution: AnyPublisher<Void, NetworkError> = webService.execute(urlRequest: request)
+    let execution: AnyPublisher<Void, Error> = webService.execute(urlRequest: request)
     let expectation = self.expectation(description: "URLError test failed")
     
     execution.sink(receiveCompletion: { completion in
-      if case let .failure(error) = completion {
+      if case let .failure(error as NetworkError) = completion {
         XCTAssertEqual(error, NetworkError.urlError(URLError(.timedOut)))
         XCTAssertEqual(self.session.methodCallStack, ["dataTaskPublisher(for:)"])
         expectation.fulfill()
@@ -109,11 +109,11 @@ class PublicWebServiceHappyPathTests: XCTestCase {
     let encodedJSON = try! encoder.encode(["name": "value"])
     session.result = ((encodedJSON, 201), nil)
     
-    let execution: AnyPublisher<SampleResponse, NetworkError> = webService.execute(urlRequest: request)
+    let execution: AnyPublisher<SampleResponse, Error> = webService.execute(urlRequest: request)
     let expectation = self.expectation(description: "URLError test failed")
     
     execution.sink(receiveCompletion: { completion in
-      if case let .failure(error) = completion {
+      if case let .failure(error as NetworkError) = completion {
         XCTAssertEqual(error, NetworkError.parsingFailure)
         XCTAssertEqual(self.session.methodCallStack, ["dataTaskPublisher(for:)"])
         expectation.fulfill()

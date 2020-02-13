@@ -37,7 +37,7 @@ open class AuthenticatedWebService: PublicWebService {
     super.init(urlSession: urlSession)
   }
   
-  override public func execute<T>(urlRequest: URLRequest) -> AnyPublisher<T, NetworkError> where T : Decodable {
+  override public func execute<T>(urlRequest: URLRequest) -> AnyPublisher<T, Error> where T : Decodable {
     var urlRequest = urlRequest
     var currentAccessToken: String?
     
@@ -46,14 +46,14 @@ open class AuthenticatedWebService: PublicWebService {
     }
     
     guard let accessToken = currentAccessToken else {
-      return Fail<T, NetworkError>(error: NetworkError.unauthorized).eraseToAnyPublisher()
+      return Fail<T, Error>(error: NetworkError.unauthorized).eraseToAnyPublisher()
     }
     
     urlRequest.addValue(accessToken, forHTTPHeaderField: "Authorization")
     
     return super.execute(urlRequest: urlRequest)
-      .catch { error -> AnyPublisher<T, NetworkError> in
-        if error == .unauthorized {
+      .catch { error -> AnyPublisher<T, Error> in
+        if error as? NetworkError == .unauthorized {
           self.authenticationQueue.sync(flags: .barrier) {
             self.tokenProvider.invalidateAccessToken()
             self.tokenProvider.reissueAccessToken()
@@ -62,12 +62,12 @@ open class AuthenticatedWebService: PublicWebService {
             .delay(for: 0.2, scheduler: self.authenticationQueue)
             .eraseToAnyPublisher()
         }
-        return Fail<T, NetworkError>(error: error).eraseToAnyPublisher()
+        return Fail<T, Error>(error: error).eraseToAnyPublisher()
     }.eraseToAnyPublisher()
   }
   
   
-  override public func execute(urlRequest: URLRequest) -> AnyPublisher<Void, NetworkError> {
+  override public func execute(urlRequest: URLRequest) -> AnyPublisher<Void, Error> {
     var urlRequest = urlRequest
     var currentAccessToken: String?
     
@@ -76,14 +76,14 @@ open class AuthenticatedWebService: PublicWebService {
     }
 
     guard let accessToken = currentAccessToken else {
-      return Fail<Void, NetworkError>(error: NetworkError.unauthorized).eraseToAnyPublisher()
+      return Fail<Void, Error>(error: NetworkError.unauthorized).eraseToAnyPublisher()
     }
     
     urlRequest.addValue(accessToken, forHTTPHeaderField: "Authorization")
     
     return super.execute(urlRequest: urlRequest)
-      .catch { error -> AnyPublisher<Void, NetworkError> in
-        if error == .unauthorized {
+      .catch { error -> AnyPublisher<Void, Error> in
+        if error as? NetworkError == .unauthorized {
           self.authenticationQueue.sync(flags: .barrier) {
             self.tokenProvider.invalidateAccessToken()
             self.tokenProvider.reissueAccessToken()
@@ -92,7 +92,7 @@ open class AuthenticatedWebService: PublicWebService {
             .delay(for: 0.2, scheduler: self.authenticationQueue)
             .eraseToAnyPublisher()
         }
-        return Fail<Void, NetworkError>(error: error).eraseToAnyPublisher()
+        return Fail<Void, Error>(error: error).eraseToAnyPublisher()
     }.eraseToAnyPublisher()
   }
 }

@@ -62,7 +62,7 @@ class AuthenticatedWebServiceTests: XCTestCase {
 
       self.webService.execute(urlRequest: request)
         .sink(receiveCompletion: {
-          if case let .failure(error) = $0 {
+          if case let .failure(error as NetworkError) = $0 {
             XCTAssertEqual(error, NetworkError.unauthorized)
             XCTAssertEqual(self.tokenProvider.methodCallStack, [])
           }
@@ -192,7 +192,7 @@ class AuthenticatedWebServiceTests: XCTestCase {
 }
 
 private class MockAuthenticatedServiceSession: MockSession {
-  override func dataTaskPublisher(for request: URLRequest) -> AnyPublisher<(data: Data, response: URLResponse), NetworkError> {
+  override func dataTaskPublisher(for request: URLRequest) -> AnyPublisher<(data: Data, response: URLResponse), Error> {
     // Replicate slow execution
     usleep(50)
     return super.dataTaskPublisher(for: request)

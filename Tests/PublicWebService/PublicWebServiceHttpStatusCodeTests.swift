@@ -45,7 +45,7 @@ class PublicWebServiceHttpStatusCodeTests: XCTestCase {
     let encodedObject = try! encoder.encode(["id": "value"])
     session.result = ((encodedObject, 200), nil)
     
-    let execution: AnyPublisher<SampleResponse, NetworkError> = webService.execute(urlRequest: request)
+    let execution: AnyPublisher<SampleResponse, Error> = webService.execute(urlRequest: request)
     let expectation = self.expectation(description: "200 test failed")
     
     execution.sink(receiveCompletion: { completion in
@@ -66,7 +66,7 @@ class PublicWebServiceHttpStatusCodeTests: XCTestCase {
     let encodedObject = try! encoder.encode(["id": "value"])
     session.result = ((encodedObject, 200), nil)
     
-    let execution: AnyPublisher<Void, NetworkError> = webService.execute(urlRequest: request)
+    let execution: AnyPublisher<Void, Error> = webService.execute(urlRequest: request)
     let expectation = self.expectation(description: "200 test failed")
     
     execution.sink(receiveCompletion: { completion in
@@ -86,7 +86,7 @@ class PublicWebServiceHttpStatusCodeTests: XCTestCase {
     let encodedObject = try! encoder.encode(["id": "value"])
     session.result = ((encodedObject, 209), nil)
     
-    let execution: AnyPublisher<SampleResponse, NetworkError> = webService.execute(urlRequest: request)
+    let execution: AnyPublisher<SampleResponse, Error> = webService.execute(urlRequest: request)
     let expectation = self.expectation(description: "209 test failed")
     
     execution.sink(receiveCompletion: { completion in
@@ -107,7 +107,7 @@ class PublicWebServiceHttpStatusCodeTests: XCTestCase {
     let encodedObject = try! encoder.encode(["id": "value"])
     session.result = ((encodedObject, 209), nil)
     
-    let execution: AnyPublisher<Void, NetworkError> = webService.execute(urlRequest: request)
+    let execution: AnyPublisher<Void, Error> = webService.execute(urlRequest: request)
     let expectation = self.expectation(description: "209 test failed")
     
     execution.sink(receiveCompletion: { completion in
@@ -128,11 +128,11 @@ class PublicWebServiceHttpStatusCodeTests: XCTestCase {
     let request = URLRequest(url: URL(string: "foo.com")!)
     session.result = ((Data(), 401), nil)
     
-    let execution: AnyPublisher<SampleResponse, NetworkError> = webService.execute(urlRequest: request)
+    let execution: AnyPublisher<SampleResponse, Error> = webService.execute(urlRequest: request)
     let expectation = self.expectation(description: "Unauthorized test failed")
     
     execution.sink(receiveCompletion: { completion in
-      if case let .failure(error) = completion {
+      if case let .failure(error as NetworkError) = completion {
         XCTAssertEqual(error, NetworkError.unauthorized)
         XCTAssertEqual(self.session.methodCallStack, ["dataTaskPublisher(for:)"])
         expectation.fulfill()
@@ -148,11 +148,11 @@ class PublicWebServiceHttpStatusCodeTests: XCTestCase {
     let request = URLRequest(url: URL(string: "foo.com")!)
     session.result = ((Data(), 401), nil)
     
-    let execution: AnyPublisher<Void, NetworkError> = webService.execute(urlRequest: request)
+    let execution: AnyPublisher<Void, Error> = webService.execute(urlRequest: request)
     let expectation = self.expectation(description: "Unauthorized test failed")
     
     execution.sink(receiveCompletion: { completion in
-      if case let .failure(error) = completion {
+      if case let .failure(error as NetworkError) = completion {
         XCTAssertEqual(error, NetworkError.unauthorized)
         XCTAssertEqual(self.session.methodCallStack, ["dataTaskPublisher(for:)"])
         expectation.fulfill()
@@ -168,11 +168,11 @@ class PublicWebServiceHttpStatusCodeTests: XCTestCase {
     let request = URLRequest(url: URL(string: "foo.com")!)
     session.result = ((Data(), 403), nil)
     
-    let execution: AnyPublisher<SampleResponse, NetworkError> = webService.execute(urlRequest: request)
+    let execution: AnyPublisher<SampleResponse, Error> = webService.execute(urlRequest: request)
     let expectation = self.expectation(description: "Unauthorized test failed")
     
     execution.sink(receiveCompletion: { completion in
-      if case let .failure(error) = completion {
+      if case let .failure(error as NetworkError) = completion {
         XCTAssertEqual(error, NetworkError.forbidden)
         XCTAssertEqual(self.session.methodCallStack, ["dataTaskPublisher(for:)"])
         expectation.fulfill()
@@ -188,11 +188,11 @@ class PublicWebServiceHttpStatusCodeTests: XCTestCase {
     let request = URLRequest(url: URL(string: "foo.com")!)
     session.result = ((Data(), 403), nil)
     
-    let execution: AnyPublisher<Void, NetworkError> = webService.execute(urlRequest: request)
+    let execution: AnyPublisher<Void, Error> = webService.execute(urlRequest: request)
     let expectation = self.expectation(description: "Unauthorized test failed")
     
     execution.sink(receiveCompletion: { completion in
-      if case let .failure(error) = completion {
+      if case let .failure(error as NetworkError) = completion {
         XCTAssertEqual(error, NetworkError.forbidden)
         XCTAssertEqual(self.session.methodCallStack, ["dataTaskPublisher(for:)"])
         expectation.fulfill()
@@ -208,11 +208,11 @@ class PublicWebServiceHttpStatusCodeTests: XCTestCase {
     let request = URLRequest(url: URL(string: "foo.com")!)
     session.result = ((Data(), 501), nil)
     
-    let execution: AnyPublisher<SampleResponse, NetworkError> = webService.execute(urlRequest: request)
+    let execution: AnyPublisher<SampleResponse, Error> = webService.execute(urlRequest: request)
     let expectation = self.expectation(description: "Generic error with status code test failed")
     
     execution.sink(receiveCompletion: { completion in
-      if case let .failure(error) = completion {
+      if case let .failure(error as NetworkError) = completion {
         XCTAssertEqual(error, NetworkError.generic(501))
         XCTAssertEqual(self.session.methodCallStack, ["dataTaskPublisher(for:)"])
         expectation.fulfill()
@@ -228,11 +228,11 @@ class PublicWebServiceHttpStatusCodeTests: XCTestCase {
     let request = URLRequest(url: URL(string: "foo.com")!)
     session.result = ((Data(), 503), nil)
     
-    let execution: AnyPublisher<SampleResponse, NetworkError> = webService.execute(urlRequest: request)
+    let execution: AnyPublisher<SampleResponse, Error> = webService.execute(urlRequest: request)
     let expectation = self.expectation(description: "Generic error with status code test failed")
     
     execution.sink(receiveCompletion: { completion in
-      if case let .failure(error) = completion {
+      if case let .failure(error as NetworkError) = completion {
         XCTAssertEqual(error, NetworkError.generic(503))
         XCTAssertEqual(self.session.methodCallStack, ["dataTaskPublisher(for:)"])
         expectation.fulfill()
