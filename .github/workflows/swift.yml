@@ -1,11 +1,14 @@
-name: Swift
+name: Build_Test
 
-on: [push]
+on: 
+  push:
+  pull_request:
+    types: [opened]
 
 jobs:
-  build:
+  build_test:
 
-    runs-on: macOS-latest
+    runs-on: macos-latest
 
     steps:
     - uses: actions/checkout@v2
