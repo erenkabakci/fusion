@@ -29,16 +29,16 @@ public protocol StatusCodeResolvable: AnyObject {
 }
 
 extension StatusCodeResolvable {
-  func mapHttpResponseCodes(httpResponse: HTTPURLResponse) throws {
+  public func mapHttpResponseCodes(httpResponse: HTTPURLResponse) throws {
     switch httpResponse.statusCode {
-      case 200 ... 299:
-        break
-      case 401:
-        throw NetworkError.unauthorized
-      case 403:
-        throw NetworkError.forbidden
-      default:
-        throw NetworkError.generic(httpResponse.statusCode)
+    case 200 ... 299:
+      break
+    case 401:
+      throw NetworkError.unauthorized
+    case 403:
+      throw NetworkError.forbidden
+    default:
+      throw NetworkError.generic(httpResponse.statusCode)
     }
   }
 }

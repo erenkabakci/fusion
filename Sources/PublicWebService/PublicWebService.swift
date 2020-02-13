@@ -100,20 +100,7 @@ open class PublicWebService: WebServiceExecutable, HttpHeaderModifiable ,StatusC
       }
     }.eraseToAnyPublisher()
   }
-  
-  public func mapHttpResponseCodes(httpResponse: HTTPURLResponse) throws {
-    switch httpResponse.statusCode {
-    case 200 ... 299:
-      break
-    case 401:
-      throw NetworkError.unauthorized
-    case 403:
-      throw NetworkError.forbidden
-    default:
-      throw NetworkError.generic(httpResponse.statusCode)
-    }
-  }
-  
+
   public func decode<T>(data: Data, type: T.Type) throws -> T where T : Decodable {
     do {
       if let data = data as? T {
