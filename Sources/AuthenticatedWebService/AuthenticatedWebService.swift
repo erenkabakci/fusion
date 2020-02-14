@@ -29,7 +29,7 @@ open class AuthenticatedWebService: PublicWebService {
   private let authenticationQueue = DispatchQueue(label: "authentication.queue", attributes: .concurrent)
   private let tokenProvider: AuthenticationTokenProvidable
   
-  init(urlSession: SessionPublisherProtocol = URLSession(configuration: URLSessionConfiguration.ephemeral,
+  public init(urlSession: SessionPublisherProtocol = URLSession(configuration: URLSessionConfiguration.ephemeral,
                                                          delegate: nil,
                                                          delegateQueue: nil),
        tokenProvider: AuthenticationTokenProvidable) {
