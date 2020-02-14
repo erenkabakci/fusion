@@ -202,6 +202,7 @@ private class MockAuthenticatedServiceSession: MockSession {
 private class MockTokenProvider: AuthenticationTokenProvidable {
   private(set) var methodCallStack = [String]()
   var accessToken: CurrentValueSubject<String?, Never> = CurrentValueSubject(nil)
+  var refreshToken: CurrentValueSubject<String?, Never> = CurrentValueSubject(nil)
 
   func reissueAccessToken() {
     accessToken.send("newToken")

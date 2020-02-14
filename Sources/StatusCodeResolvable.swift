@@ -29,7 +29,7 @@ public protocol StatusCodeResolvable: AnyObject {
 }
 
 extension StatusCodeResolvable {
-  func mapHttpResponseCodes(httpResponse: HTTPURLResponse) throws {
+    public func mapHttpResponseCodes(httpResponse: HTTPURLResponse) throws {
     switch httpResponse.statusCode {
       case 200 ... 299:
         break

@@ -32,6 +32,9 @@ public protocol CustomDecodable: AnyObject {
 extension CustomDecodable {
   public func decode<T>(data: Data, type _: T.Type) throws -> T where T : Decodable {
     do {
+      if let data = data as? T {
+        return data
+      }
         return try jsonDecoder.decode(T.self, from: data)
     } catch {
       throw NetworkError.parsingFailure
