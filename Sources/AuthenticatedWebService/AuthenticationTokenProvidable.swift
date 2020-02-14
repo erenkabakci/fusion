@@ -27,6 +27,7 @@ import Foundation
 
 public protocol AuthenticationTokenProvidable: AnyObject {
   var accessToken: CurrentValueSubject<String?, Never> { get }
+  var refreshToken: CurrentValueSubject<String?, Never> { get }
   func reissueAccessToken()
   func invalidateAccessToken()
   func invalidateRefreshToken()
