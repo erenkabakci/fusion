@@ -25,15 +25,23 @@
 import Combine
 import Foundation
 
+public enum AuthorizationHeaderScheme: String {
+  case basic = "Basic "
+  case bearer = "Bearer "
+}
+
 open class AuthenticatedWebService: PublicWebService {
   private let authenticationQueue = DispatchQueue(label: "authentication.queue", attributes: .concurrent)
   private let tokenProvider: AuthenticationTokenProvidable
+  private let authorizationHeaderScheme: AuthorizationHeaderScheme
   
   public init(urlSession: SessionPublisherProtocol = URLSession(configuration: URLSessionConfiguration.ephemeral,
                                                          delegate: nil,
                                                          delegateQueue: nil),
-       tokenProvider: AuthenticationTokenProvidable) {
+       tokenProvider: AuthenticationTokenProvidable,
+       authorizationHeaderScheme: AuthorizationHeaderScheme = .bearer) {
     self.tokenProvider = tokenProvider
+    self.authorizationHeaderScheme = authorizationHeaderScheme
     super.init(urlSession: urlSession)
   }
   
@@ -49,7 +57,7 @@ open class AuthenticatedWebService: PublicWebService {
       return Fail<T, Error>(error: NetworkError.unauthorized).eraseToAnyPublisher()
     }
     
-    urlRequest.addValue(accessToken, forHTTPHeaderField: "Authorization")
+    urlRequest.addValue(self.authorizationHeaderScheme.rawValue + accessToken, forHTTPHeaderField: "Authorization")
     
     return super.execute(urlRequest: urlRequest)
       .catch { error -> AnyPublisher<T, Error> in
@@ -79,7 +87,7 @@ open class AuthenticatedWebService: PublicWebService {
       return Fail<Void, Error>(error: NetworkError.unauthorized).eraseToAnyPublisher()
     }
     
-    urlRequest.addValue(accessToken, forHTTPHeaderField: "Authorization")
+    urlRequest.addValue(self.authorizationHeaderScheme.rawValue + accessToken, forHTTPHeaderField: "Authorization")
     
     return super.execute(urlRequest: urlRequest)
       .catch { error -> AnyPublisher<Void, Error> in

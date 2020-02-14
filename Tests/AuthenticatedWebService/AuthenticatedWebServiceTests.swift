@@ -50,6 +50,34 @@ class AuthenticatedWebServiceTests: XCTestCase {
       }).store(in: &subscriptions)
   }
 
+  func test_givenAuthenticatedWebService_whenAuthorizationHeaderSchemeBasic_shouldAppendBasicHeader() {
+    let request = URLRequest(url: URL(string: "foo.com")!)
+    webService = AuthenticatedWebService(urlSession: session,
+                                         tokenProvider: tokenProvider,
+                                         authorizationHeaderScheme: .basic)
+    session.result = ((Data(), 200), nil)
+    tokenProvider.accessToken.value = "someToken"
+
+    _ = webService.execute(urlRequest: request).sink(receiveCompletion: { _ in }, receiveValue: { _ in })
+
+    XCTAssertEqual(session.finalUrlRequest?.allHTTPHeaderFields?["Authorization"], "Basic someToken")
+  }
+
+  func test_givenAuthenticatedWebService_whenAuthorizationHeaderSchemeBearer_shouldAppendBearerHeader() {
+    let request = URLRequest(url: URL(string: "foo.com")!)
+    webService = AuthenticatedWebService(urlSession: session,
+                                         tokenProvider: tokenProvider,
+                                         authorizationHeaderScheme: .bearer)
+
+    let encodedJSON = try! encoder.encode(["name": "value"])
+    session.result = ((encodedJSON, 200), nil)
+    tokenProvider.accessToken.value = "someToken"
+
+    _ = webService.execute(urlRequest: request).sink(receiveCompletion: { _ in }, receiveValue: { (_: SampleResponse) in })
+
+    XCTAssertEqual(session.finalUrlRequest?.allHTTPHeaderFields?["Authorization"], "Bearer someToken")
+  }
+
   func test_givenAuthenticatedWebService_whenParallelRequestsFired_thenShouldNotRaceForTokenRefresh() {
     let testScheduler = TestScheduler(initialClock: 0)
     let request = URLRequest(url: URL(string: "foo.com")!)
