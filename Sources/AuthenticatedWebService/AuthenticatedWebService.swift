@@ -28,6 +28,7 @@ import Foundation
 public enum AuthorizationHeaderScheme: String {
   case basic = "Basic "
   case bearer = "Bearer "
+  case none = ""
 }
 
 open class AuthenticatedWebService: PublicWebService {
@@ -39,7 +40,7 @@ open class AuthenticatedWebService: PublicWebService {
                                                          delegate: nil,
                                                          delegateQueue: nil),
        tokenProvider: AuthenticationTokenProvidable,
-       authorizationHeaderScheme: AuthorizationHeaderScheme = .bearer) {
+       authorizationHeaderScheme: AuthorizationHeaderScheme = .none) {
     self.tokenProvider = tokenProvider
     self.authorizationHeaderScheme = authorizationHeaderScheme
     super.init(urlSession: urlSession)

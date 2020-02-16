@@ -50,6 +50,18 @@ class AuthenticatedWebServiceTests: XCTestCase {
       }).store(in: &subscriptions)
   }
 
+  func test_givenAuthenticatedWebService_whenAuthorizationHeaderSchemeNone_shouldAppendNoTokenPrefixHeader() {
+    let request = URLRequest(url: URL(string: "foo.com")!)
+    webService = AuthenticatedWebService(urlSession: session,
+                                         tokenProvider: tokenProvider)
+    session.result = ((Data(), 200), nil)
+    tokenProvider.accessToken.value = "someToken"
+
+    _ = webService.execute(urlRequest: request).sink(receiveCompletion: { _ in }, receiveValue: { _ in })
+
+    XCTAssertEqual(session.finalUrlRequest?.allHTTPHeaderFields?["Authorization"], "someToken")
+  }
+
   func test_givenAuthenticatedWebService_whenAuthorizationHeaderSchemeBasic_shouldAppendBasicHeader() {
     let request = URLRequest(url: URL(string: "foo.com")!)
     webService = AuthenticatedWebService(urlSession: session,
