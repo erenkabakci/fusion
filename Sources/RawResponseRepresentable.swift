@@ -1,5 +1,5 @@
 //
-//  CustomDecodable.swift
+//  RawResponseRepresentable.swift
 //  fusion
 //
 //  Copyright (c) 2020 Eren Kabakçı
@@ -22,19 +22,9 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
+import Combine
 import Foundation
 
-public protocol CustomDecodable: AnyObject {
-  var jsonDecoder: JSONDecoder { get }
-  func decode<T: Decodable>(data: Data, type: T.Type) throws -> T
-}
-
-extension CustomDecodable {
-  public func decode<T>(data: Data, type _: T.Type) throws -> T where T : Decodable {
-    do {
-        return try jsonDecoder.decode(T.self, from: data)
-    } catch {
-      throw NetworkError.parsingFailure
-    }
-  }
+public protocol RawResponseRepresentable: AnyObject {
+  func rawResponse(urlRequest: URLRequest) -> AnyPublisher<(data: Data, response: HTTPURLResponse), Error>
 }

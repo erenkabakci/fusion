@@ -25,7 +25,12 @@
 import Combine
 import Foundation
 
-open class WebService: WebServiceExecutable, HttpHeaderModifiable ,StatusCodeResolvable, CustomDecodable {
+open class WebService:
+  WebServiceExecutable,
+  HttpHeaderModifiable,
+  StatusCodeResolvable,
+  CustomDecodable,
+RawResponseRepresentable {
   public var defaultHttpHeaders: [String : String] = [:]
   public let jsonDecoder: JSONDecoder = JSONDecoder()
   private let session: SessionPublisherProtocol
@@ -36,6 +41,16 @@ open class WebService: WebServiceExecutable, HttpHeaderModifiable ,StatusCodeRes
                                                                 delegateQueue: nil)) {
     session = urlSession
   }
+
+  public func rawResponse(urlRequest: URLRequest) -> AnyPublisher<(data: Data, response: HTTPURLResponse), Error> {
+    session.dataTaskPublisher(for: urlRequest)
+      .flatMap { output -> AnyPublisher<(data: Data, response: HTTPURLResponse), Error> in
+        guard let httpResponse = output.response as? HTTPURLResponse else {
+          return Fail(error: NetworkError.unknown).eraseToAnyPublisher()
+        }
+        return CurrentValueSubject((output.data, httpResponse)).eraseToAnyPublisher()
+    }.eraseToAnyPublisher()
+  }
   
   public func execute<T>(urlRequest: URLRequest) -> AnyPublisher<T, Error> where T : Decodable {
     Deferred {
@@ -44,18 +59,17 @@ open class WebService: WebServiceExecutable, HttpHeaderModifiable ,StatusCodeRes
           promise(.failure(NetworkError.unknown))
           return
         }
+
+        var urlRequest = urlRequest
+        urlRequest.appendAdditionalHeaders(headers: self.defaultHttpHeaders)
         
-        var urlRequest: URLRequest = urlRequest
-        for (key, value) in self.defaultHttpHeaders {
-          urlRequest.addValue(value, forHTTPHeaderField: key)
-        }
-        
-        self.session.dataTaskPublisher(for: urlRequest)
+        self.rawResponse(urlRequest: urlRequest)
           .tryMap {
-            guard let httpResponse = $0.response as? HTTPURLResponse else {
-              throw NetworkError.unknown
+            try self.mapHttpResponseCodes(output: $0)
+
+            if let data = $0.data as? T {
+              return data
             }
-            try self.mapHttpResponseCodes(httpResponse: httpResponse)
             return try self.decode(data: $0.data, type: T.self)
         }
         .sink(receiveCompletion: { (completion: Subscribers.Completion<Error>) in
@@ -77,17 +91,12 @@ open class WebService: WebServiceExecutable, HttpHeaderModifiable ,StatusCodeRes
           return
         }
         
-        var urlRequest: URLRequest = urlRequest
-        for (key, value) in self.defaultHttpHeaders {
-          urlRequest.addValue(value, forHTTPHeaderField: key)
-        }
+        var urlRequest = urlRequest
+        urlRequest.appendAdditionalHeaders(headers: self.defaultHttpHeaders)
         
-        self.session.dataTaskPublisher(for: urlRequest)
+        self.rawResponse(urlRequest: urlRequest)
           .tryMap {
-            guard let httpResponse = $0.response as? HTTPURLResponse else {
-              throw NetworkError.unknown
-            }
-            try self.mapHttpResponseCodes(httpResponse: httpResponse)
+            try self.mapHttpResponseCodes(output: $0)
             return
         }
         .sink(receiveCompletion: { (completion: Subscribers.Completion<Error>) in
@@ -99,5 +108,13 @@ open class WebService: WebServiceExecutable, HttpHeaderModifiable ,StatusCodeRes
           .store(in: &self.subscriptions)
       }
     }.eraseToAnyPublisher()
+  }
+}
+
+private extension URLRequest {
+  mutating func appendAdditionalHeaders(headers: [String : String]) {
+    for (key, value) in headers {
+      self.addValue(value, forHTTPHeaderField: key)
+    }
   }
 }
