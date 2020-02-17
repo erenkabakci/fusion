@@ -1,5 +1,5 @@
 //
-//  PublicWebServiceHttpStatusCodeTests.swift
+//  WebServiceHttpStatusCodeTests.swift
 //  fusionTests
 //
 //  Copyright (c) 2020 Eren Kabakçı
@@ -26,16 +26,16 @@ import Combine
 import XCTest
 @testable import fusion
 
-class PublicWebServiceHttpStatusCodeTests: XCTestCase {
+class WebServiceHttpStatusCodeTests: XCTestCase {
   private var session: MockSession!
-  private var webService: PublicWebService!
+  private var webService: WebService!
   private var subscriptions = Set<AnyCancellable>()
   private let encoder = JSONEncoder()
   
   override func setUp() {
     super.setUp()
     session = MockSession()
-    webService = PublicWebService(urlSession: session)
+    webService = WebService(urlSession: session)
   }
   
   // MARK: Success Cases

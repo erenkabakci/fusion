@@ -31,7 +31,7 @@ public enum AuthorizationHeaderScheme: String {
   case none = ""
 }
 
-open class AuthenticatedWebService: PublicWebService {
+open class AuthenticatedWebService: WebService {
   private let authenticationQueue = DispatchQueue(label: "authentication.queue", attributes: .concurrent)
   private let tokenProvider: AuthenticationTokenProvidable
   private let authorizationHeaderScheme: AuthorizationHeaderScheme

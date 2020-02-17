@@ -1,5 +1,5 @@
 //
-//  PublicWebServiceStreamTests.swift
+//  WebServiceStreamTests.swift
 //  fusionTests
 //
 //  Copyright (c) 2020 Eren Kabakçı
@@ -26,15 +26,15 @@ import Combine
 import XCTest
 @testable import fusion
 
-class PublicWebServiceStreamTests: XCTestCase {
+class WebServiceStreamTests: XCTestCase {
   private var session: MockSession!
-  private var webService: PublicWebService!
+  private var webService: WebService!
   private var subscriptions = Set<AnyCancellable>()
   
   override func setUp() {
     super.setUp()
     session = MockSession()
-    webService = PublicWebService(urlSession: session)
+    webService = WebService(urlSession: session)
   }
   
   // Tests `Deferred` Future usage in the webService

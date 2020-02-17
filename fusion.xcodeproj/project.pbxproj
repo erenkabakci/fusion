@@ -8,18 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		3A71BE6823F2B372009D092E /* HttpHeaderModifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE6723F2B372009D092E /* HttpHeaderModifiable.swift */; };
-		3A71BE6A23F3489C009D092E /* PublicWebServiceHappyPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE6923F3489C009D092E /* PublicWebServiceHappyPathTests.swift */; };
+		3A71BE6A23F3489C009D092E /* WebServiceHappyPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE6923F3489C009D092E /* WebServiceHappyPathTests.swift */; };
 		3A71BE6C23F34BCA009D092E /* MockSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE6B23F34BCA009D092E /* MockSession.swift */; };
 		3A71BE6E23F3504F009D092E /* SampleResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE6D23F3504F009D092E /* SampleResponse.swift */; };
-		3A71BE7123F35911009D092E /* PublicWebServiceHttpStatusCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE7023F35911009D092E /* PublicWebServiceHttpStatusCodeTests.swift */; };
-		3A71BE7323F35DA4009D092E /* PublicWebServiceStreamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE7223F35DA4009D092E /* PublicWebServiceStreamTests.swift */; };
+		3A71BE7123F35911009D092E /* WebServiceHttpStatusCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE7023F35911009D092E /* WebServiceHttpStatusCodeTests.swift */; };
+		3A71BE7323F35DA4009D092E /* WebServiceStreamTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE7223F35DA4009D092E /* WebServiceStreamTests.swift */; };
 		3A7DD7C823F441C9001AED72 /* EntwineTest in Frameworks */ = {isa = PBXBuildFile; productRef = 3A7DD7C723F441C9001AED72 /* EntwineTest */; };
 		3A7DD7CB23F449F2001AED72 /* AuthenticatedWebServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7DD7CA23F449F2001AED72 /* AuthenticatedWebServiceTests.swift */; };
 		3AE34B2123F2056B00B453D7 /* fusion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AE34B1723F2056B00B453D7 /* fusion.framework */; };
 		3AE34B3223F211B500B453D7 /* SessionPublisherProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3123F211B500B453D7 /* SessionPublisherProtocol.swift */; };
 		3AE34B3423F2124100B453D7 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3323F2124100B453D7 /* NetworkError.swift */; };
 		3AE34B3623F2143900B453D7 /* WebServiceExecutable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3523F2143900B453D7 /* WebServiceExecutable.swift */; };
-		3AE34B3823F214C100B453D7 /* PublicWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3723F214C100B453D7 /* PublicWebService.swift */; };
+		3AE34B3823F214C100B453D7 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3723F214C100B453D7 /* WebService.swift */; };
 		3AE34B3A23F2197300B453D7 /* CustomDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3923F2197300B453D7 /* CustomDecodable.swift */; };
 		3AE34B3D23F21BA000B453D7 /* StatusCodeResolvable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3C23F21BA000B453D7 /* StatusCodeResolvable.swift */; };
 		3AE34B3F23F2232100B453D7 /* AuthenticatedWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3E23F2232100B453D7 /* AuthenticatedWebService.swift */; };
@@ -38,11 +38,11 @@
 
 /* Begin PBXFileReference section */
 		3A71BE6723F2B372009D092E /* HttpHeaderModifiable.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = HttpHeaderModifiable.swift; sourceTree = "<group>"; tabWidth = 2; };
-		3A71BE6923F3489C009D092E /* PublicWebServiceHappyPathTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = PublicWebServiceHappyPathTests.swift; sourceTree = "<group>"; tabWidth = 2; };
+		3A71BE6923F3489C009D092E /* WebServiceHappyPathTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = WebServiceHappyPathTests.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3A71BE6B23F34BCA009D092E /* MockSession.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = MockSession.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3A71BE6D23F3504F009D092E /* SampleResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleResponse.swift; sourceTree = "<group>"; };
-		3A71BE7023F35911009D092E /* PublicWebServiceHttpStatusCodeTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = PublicWebServiceHttpStatusCodeTests.swift; sourceTree = "<group>"; tabWidth = 2; };
-		3A71BE7223F35DA4009D092E /* PublicWebServiceStreamTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = PublicWebServiceStreamTests.swift; sourceTree = "<group>"; tabWidth = 2; };
+		3A71BE7023F35911009D092E /* WebServiceHttpStatusCodeTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = WebServiceHttpStatusCodeTests.swift; sourceTree = "<group>"; tabWidth = 2; };
+		3A71BE7223F35DA4009D092E /* WebServiceStreamTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = WebServiceStreamTests.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3A7DD7CA23F449F2001AED72 /* AuthenticatedWebServiceTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = AuthenticatedWebServiceTests.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3AE34B1723F2056B00B453D7 /* fusion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = fusion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AE34B1B23F2056B00B453D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -51,7 +51,7 @@
 		3AE34B3123F211B500B453D7 /* SessionPublisherProtocol.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = SessionPublisherProtocol.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3AE34B3323F2124100B453D7 /* NetworkError.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3AE34B3523F2143900B453D7 /* WebServiceExecutable.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = WebServiceExecutable.swift; sourceTree = "<group>"; tabWidth = 2; };
-		3AE34B3723F214C100B453D7 /* PublicWebService.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = PublicWebService.swift; sourceTree = "<group>"; tabWidth = 2; };
+		3AE34B3723F214C100B453D7 /* WebService.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3AE34B3923F2197300B453D7 /* CustomDecodable.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = CustomDecodable.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3AE34B3C23F21BA000B453D7 /* StatusCodeResolvable.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = StatusCodeResolvable.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3AE34B3E23F2232100B453D7 /* AuthenticatedWebService.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = AuthenticatedWebService.swift; sourceTree = "<group>"; tabWidth = 2; };
@@ -78,14 +78,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3A71BE6F23F358E8009D092E /* PublicWebService */ = {
+		3A71BE6F23F358E8009D092E /* WebService */ = {
 			isa = PBXGroup;
 			children = (
-				3A71BE6923F3489C009D092E /* PublicWebServiceHappyPathTests.swift */,
-				3A71BE7023F35911009D092E /* PublicWebServiceHttpStatusCodeTests.swift */,
-				3A71BE7223F35DA4009D092E /* PublicWebServiceStreamTests.swift */,
+				3A7DD7C923F449C9001AED72 /* AuthenticatedWebService */,
+				3A71BE6923F3489C009D092E /* WebServiceHappyPathTests.swift */,
+				3A71BE7023F35911009D092E /* WebServiceHttpStatusCodeTests.swift */,
+				3A71BE7223F35DA4009D092E /* WebServiceStreamTests.swift */,
 			);
-			path = PublicWebService;
+			path = WebService;
 			sourceTree = "<group>";
 		};
 		3A7DD7C923F449C9001AED72 /* AuthenticatedWebService */ = {
@@ -118,8 +119,7 @@
 		3AE34B2423F2056B00B453D7 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				3A7DD7C923F449C9001AED72 /* AuthenticatedWebService */,
-				3A71BE6F23F358E8009D092E /* PublicWebService */,
+				3A71BE6F23F358E8009D092E /* WebService */,
 				3AE34B2723F2056B00B453D7 /* Info.plist */,
 				3A71BE6B23F34BCA009D092E /* MockSession.swift */,
 				3A71BE6D23F3504F009D092E /* SampleResponse.swift */,
@@ -136,8 +136,7 @@
 				3AE34B3923F2197300B453D7 /* CustomDecodable.swift */,
 				3AE34B3C23F21BA000B453D7 /* StatusCodeResolvable.swift */,
 				3A71BE6723F2B372009D092E /* HttpHeaderModifiable.swift */,
-				3AE34B4123F2235F00B453D7 /* PublicWebService */,
-				3AE34B4023F2235500B453D7 /* AuthenticatedWebService */,
+				3AE34B4123F2235F00B453D7 /* WebService */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -151,12 +150,13 @@
 			path = AuthenticatedWebService;
 			sourceTree = "<group>";
 		};
-		3AE34B4123F2235F00B453D7 /* PublicWebService */ = {
+		3AE34B4123F2235F00B453D7 /* WebService */ = {
 			isa = PBXGroup;
 			children = (
-				3AE34B3723F214C100B453D7 /* PublicWebService.swift */,
+				3AE34B3723F214C100B453D7 /* WebService.swift */,
+				3AE34B4023F2235500B453D7 /* AuthenticatedWebService */,
 			);
-			path = PublicWebService;
+			path = WebService;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -282,7 +282,7 @@
 				3AE34B3F23F2232100B453D7 /* AuthenticatedWebService.swift in Sources */,
 				3AE34B3423F2124100B453D7 /* NetworkError.swift in Sources */,
 				3AE34B3623F2143900B453D7 /* WebServiceExecutable.swift in Sources */,
-				3AE34B3823F214C100B453D7 /* PublicWebService.swift in Sources */,
+				3AE34B3823F214C100B453D7 /* WebService.swift in Sources */,
 				3AE34B4323F2245A00B453D7 /* AuthenticationTokenProvidable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -291,10 +291,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A71BE7123F35911009D092E /* PublicWebServiceHttpStatusCodeTests.swift in Sources */,
+				3A71BE7123F35911009D092E /* WebServiceHttpStatusCodeTests.swift in Sources */,
 				3A71BE6C23F34BCA009D092E /* MockSession.swift in Sources */,
-				3A71BE6A23F3489C009D092E /* PublicWebServiceHappyPathTests.swift in Sources */,
-				3A71BE7323F35DA4009D092E /* PublicWebServiceStreamTests.swift in Sources */,
+				3A71BE6A23F3489C009D092E /* WebServiceHappyPathTests.swift in Sources */,
+				3A71BE7323F35DA4009D092E /* WebServiceStreamTests.swift in Sources */,
 				3A7DD7CB23F449F2001AED72 /* AuthenticatedWebServiceTests.swift in Sources */,
 				3A71BE6E23F3504F009D092E /* SampleResponse.swift in Sources */,
 			);

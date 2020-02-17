@@ -1,5 +1,5 @@
 //
-//  PublicWebService.swift
+//  WebService.swift
 //  fusion
 //
 //  Copyright (c) 2020 Eren Kabakçı
@@ -25,7 +25,7 @@
 import Combine
 import Foundation
 
-open class PublicWebService: WebServiceExecutable, HttpHeaderModifiable ,StatusCodeResolvable, CustomDecodable {
+open class WebService: WebServiceExecutable, HttpHeaderModifiable ,StatusCodeResolvable, CustomDecodable {
   public var defaultHttpHeaders: [String : String] = [:]
   public let jsonDecoder: JSONDecoder = JSONDecoder()
   private let session: SessionPublisherProtocol
