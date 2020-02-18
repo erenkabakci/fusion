@@ -114,7 +114,7 @@ RawResponseRepresentable {
 private extension URLRequest {
   mutating func appendAdditionalHeaders(headers: [String : String]) {
     for (key, value) in headers {
-      self.addValue(value, forHTTPHeaderField: key)
+      self.setValue(value, forHTTPHeaderField: key)
     }
   }
 }

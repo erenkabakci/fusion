@@ -58,7 +58,7 @@ open class AuthenticatedWebService: WebService {
       return Fail<T, Error>(error: NetworkError.unauthorized).eraseToAnyPublisher()
     }
     
-    urlRequest.addValue(self.authorizationHeaderScheme.rawValue + accessToken, forHTTPHeaderField: "Authorization")
+    urlRequest.setValue(self.authorizationHeaderScheme.rawValue + accessToken, forHTTPHeaderField: "Authorization")
     
     return super.execute(urlRequest: urlRequest)
       .catch { error -> AnyPublisher<T, Error> in
@@ -88,7 +88,7 @@ open class AuthenticatedWebService: WebService {
       return Fail<Void, Error>(error: NetworkError.unauthorized).eraseToAnyPublisher()
     }
     
-    urlRequest.addValue(self.authorizationHeaderScheme.rawValue + accessToken, forHTTPHeaderField: "Authorization")
+    urlRequest.setValue(self.authorizationHeaderScheme.rawValue + accessToken, forHTTPHeaderField: "Authorization")
     
     return super.execute(urlRequest: urlRequest)
       .catch { error -> AnyPublisher<Void, Error> in
