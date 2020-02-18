@@ -29,8 +29,8 @@ public protocol CustomDecodable: AnyObject {
   func decode<T: Decodable>(data: Data, type: T.Type) throws -> T
 }
 
-extension CustomDecodable {
-  public func decode<T>(data: Data, type _: T.Type) throws -> T where T : Decodable {
+public extension CustomDecodable {
+  func decode<T>(data: Data, type _: T.Type) throws -> T where T : Decodable {
     do {
         return try jsonDecoder.decode(T.self, from: data)
     } catch {
