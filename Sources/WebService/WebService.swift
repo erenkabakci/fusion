@@ -28,9 +28,9 @@ import Foundation
 open class WebService:
   WebServiceExecutable,
   HttpHeaderModifiable,
+  RawResponseRepresentable,
   StatusCodeResolvable,
-  CustomDecodable,
-RawResponseRepresentable {
+CustomDecodable{
   public var defaultHttpHeaders: [String : String] = [:]
   public let jsonDecoder: JSONDecoder = JSONDecoder()
   private let session: SessionPublisherProtocol
@@ -108,6 +108,27 @@ RawResponseRepresentable {
           .store(in: &self.subscriptions)
       }
     }.eraseToAnyPublisher()
+  }
+
+  open func mapHttpResponseCodes(output: (data:Data, response: HTTPURLResponse)) throws {
+    switch output.response.statusCode {
+    case 200 ... 399:
+      break
+    case 401:
+      throw NetworkError.unauthorized
+    case 403:
+      throw NetworkError.forbidden
+    default:
+      throw NetworkError.generic(output.response.statusCode)
+    }
+  }
+
+  open func decode<T>(data: Data, type _: T.Type) throws -> T where T : Decodable {
+    do {
+      return try jsonDecoder.decode(T.self, from: data)
+    } catch {
+      throw NetworkError.parsingFailure
+    }
   }
 }
 
