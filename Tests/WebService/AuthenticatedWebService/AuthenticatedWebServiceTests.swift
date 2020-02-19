@@ -100,6 +100,7 @@ class AuthenticatedWebServiceTests: XCTestCase {
       // Mimicking successful api response but no token case
       self.session.result = ((Data(), 200), nil)
 
+      // First call should fail since there is no access token yet
       self.webService.execute(urlRequest: request)
         .sink(receiveCompletion: {
           if case let .failure(error as NetworkError) = $0 {
@@ -114,6 +115,7 @@ class AuthenticatedWebServiceTests: XCTestCase {
       self.session.result = ((Data(), 401), nil)
     }
 
+    // given second call, has an invalid token
     testScheduler.schedule(after: 200) {
       // Demonstrate two parallel requests not racing each other to refresh the token
       self.tokenProvider.accessToken.value = "invalidToken"
@@ -132,6 +134,7 @@ class AuthenticatedWebServiceTests: XCTestCase {
         })
         .store(in: &self.subscriptions)
 
+      // a parallel call should succesfully execute since the token is refreshed by the previous call
       self.webService.execute(urlRequest: request)
         .sink(receiveCompletion: {
           if case .finished = $0 {
@@ -146,8 +149,6 @@ class AuthenticatedWebServiceTests: XCTestCase {
         })
         .store(in: &self.subscriptions)
     }
-
-
 
     let subscriber = testScheduler.createTestableSubscriber(String?.self, Never.self)
     self.tokenProvider.accessToken.subscribe(subscriber)
@@ -177,6 +178,7 @@ class AuthenticatedWebServiceTests: XCTestCase {
       self.session.result = ((Data(), 401), nil)
     }
 
+    // first call should refresh the token with a valid one and override the previously set invalid token
     testScheduler.schedule(after: 200) {
       self.webService.execute(urlRequest: request)
         .sink(receiveCompletion: {
@@ -193,6 +195,7 @@ class AuthenticatedWebServiceTests: XCTestCase {
         .store(in: &self.subscriptions)
     }
 
+    // second call should execute normally even if it has an invalid token, since the previous call is already refreshing the token for this one as wel
     testScheduler.schedule(after: 220) {
       // Demonstrate two consecutive requests not racing each other to refresh the token
       self.tokenProvider.accessToken.value = "invalidToken2"
@@ -244,9 +247,10 @@ private class MockTokenProvider: AuthenticationTokenProvidable {
   var accessToken: CurrentValueSubject<String?, Never> = CurrentValueSubject(nil)
   var refreshToken: CurrentValueSubject<String?, Never> = CurrentValueSubject(nil)
 
-  func reissueAccessToken() {
+  func reissueAccessToken() -> AnyPublisher<Never, Error> {
     accessToken.send("newToken")
     methodCallStack.append(#function)
+    return Empty<Never, Error>(completeImmediately: true).eraseToAnyPublisher()
   }
 
   func invalidateAccessToken() {

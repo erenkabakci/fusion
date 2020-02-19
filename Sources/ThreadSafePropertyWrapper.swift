@@ -1,5 +1,5 @@
 //
-//  AuthenticationTokenProvidable.swift
+//  ThreadSafePropertyWrapper.swift
 //  fusion
 //
 //  Copyright (c) 2020 Eren Kabakçı
@@ -22,13 +22,23 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //  SOFTWARE.
 
-import Combine
 import Foundation
 
-public protocol AuthenticationTokenProvidable: AnyObject {
-  var accessToken: CurrentValueSubject<String?, Never> { get }
-  var refreshToken: CurrentValueSubject<String?, Never> { get }
-  func reissueAccessToken() -> AnyPublisher<Never, Error>
-  func invalidateAccessToken()
-  func invalidateRefreshToken()
+@propertyWrapper
+public struct ThreadSafe<Value> {
+    private let queue = DispatchQueue(label: "atomicAccess")
+    private var value: Value
+
+    public init(wrappedValue: Value) {
+        self.value = wrappedValue
+    }
+
+    public var wrappedValue: Value {
+        get {
+            queue.sync { value }
+        }
+        set {
+            queue.sync { value = newValue }
+        }
+    }
 }

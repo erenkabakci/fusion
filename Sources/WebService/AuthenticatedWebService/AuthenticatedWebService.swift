@@ -32,10 +32,10 @@ public enum AuthorizationHeaderScheme: String {
 }
 
 open class AuthenticatedWebService: WebService {
-  private let authenticationQueue = DispatchQueue(label: "authentication.queue", attributes: .concurrent)
+  private let authenticationQueue = DispatchQueue(label: "authentication.queue")
   private let tokenProvider: AuthenticationTokenProvidable
   private let authorizationHeaderScheme: AuthorizationHeaderScheme
-  
+
   public init(urlSession: SessionPublisherProtocol = URLSession(configuration: URLSessionConfiguration.ephemeral,
                                                          delegate: nil,
                                                          delegateQueue: nil),
@@ -49,7 +49,7 @@ open class AuthenticatedWebService: WebService {
   override public func execute<T>(urlRequest: URLRequest) -> AnyPublisher<T, Error> where T : Decodable {
     var urlRequest = urlRequest
     var currentAccessToken: String?
-    
+
     authenticationQueue.sync {
       currentAccessToken = self.tokenProvider.accessToken.value
     }
@@ -61,25 +61,27 @@ open class AuthenticatedWebService: WebService {
     urlRequest.setValue(self.authorizationHeaderScheme.rawValue + accessToken, forHTTPHeaderField: "Authorization")
     
     return super.execute(urlRequest: urlRequest)
-      .catch { error -> AnyPublisher<T, Error> in
+      .catch { [weak self] error -> AnyPublisher<T, Error> in
+        guard let self = self else {
+          return Fail<T, Error>(error: NetworkError.unknown).eraseToAnyPublisher()
+        }
+
         if error as? NetworkError == .unauthorized {
-          self.authenticationQueue.sync(flags: .barrier) {
-            self.tokenProvider.invalidateAccessToken()
-            self.tokenProvider.reissueAccessToken()
-          }
+          self.retrySynchronizedTokenRefresh()
+
           return self.execute(urlRequest: urlRequest)
             .delay(for: 0.2, scheduler: self.authenticationQueue)
             .eraseToAnyPublisher()
         }
         return Fail<T, Error>(error: error).eraseToAnyPublisher()
-    }.eraseToAnyPublisher()
+      }.eraseToAnyPublisher()
   }
   
   
   override public func execute(urlRequest: URLRequest) -> AnyPublisher<Void, Error> {
     var urlRequest = urlRequest
     var currentAccessToken: String?
-    
+
     authenticationQueue.sync {
       currentAccessToken = self.tokenProvider.accessToken.value
     }
@@ -91,17 +93,35 @@ open class AuthenticatedWebService: WebService {
     urlRequest.setValue(self.authorizationHeaderScheme.rawValue + accessToken, forHTTPHeaderField: "Authorization")
     
     return super.execute(urlRequest: urlRequest)
-      .catch { error -> AnyPublisher<Void, Error> in
+      .catch { [weak self] error -> AnyPublisher<Void, Error> in
+        guard let self = self else {
+          return Fail<Void, Error>(error: NetworkError.unknown).eraseToAnyPublisher()
+        }
+
         if error as? NetworkError == .unauthorized {
-          self.authenticationQueue.sync(flags: .barrier) {
-            self.tokenProvider.invalidateAccessToken()
-            self.tokenProvider.reissueAccessToken()
-          }
+          self.retrySynchronizedTokenRefresh()
+
           return self.execute(urlRequest: urlRequest)
             .delay(for: 0.2, scheduler: self.authenticationQueue)
             .eraseToAnyPublisher()
         }
         return Fail<Void, Error>(error: error).eraseToAnyPublisher()
     }.eraseToAnyPublisher()
+  }
+
+  private func retrySynchronizedTokenRefresh() {
+    let dispatchGroup = DispatchGroup()
+    dispatchGroup.enter()
+
+    authenticationQueue.sync(flags: .barrier) {
+      self.tokenProvider.invalidateAccessToken()
+      self.tokenProvider.reissueAccessToken()
+        .sink(receiveCompletion: { _ in
+          dispatchGroup.leave()
+        },
+              receiveValue: { _ in })
+        .store(in: &self.subscriptions)
+      dispatchGroup.wait()
+    }
   }
 }

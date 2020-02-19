@@ -34,7 +34,7 @@ CustomDecodable{
   public var defaultHttpHeaders: [String : String] = [:]
   public let jsonDecoder: JSONDecoder = JSONDecoder()
   private let session: SessionPublisherProtocol
-  open var subscriptions = Set<AnyCancellable>()
+  @ThreadSafe open var subscriptions = Set<AnyCancellable>()
   
   public init(urlSession: SessionPublisherProtocol = URLSession(configuration: URLSessionConfiguration.ephemeral,
                                                                 delegate: nil,
@@ -55,7 +55,7 @@ CustomDecodable{
   public func execute<T>(urlRequest: URLRequest) -> AnyPublisher<T, Error> where T : Decodable {
     Deferred {
       Future { [weak self] promise in
-        guard let self = `self` else {
+        guard let self = self else {
           promise(.failure(NetworkError.unknown))
           return
         }
@@ -86,7 +86,7 @@ CustomDecodable{
   public func execute(urlRequest: URLRequest) -> AnyPublisher<Void, Error> {
     Deferred {
       Future { [weak self] promise in
-        guard let self = `self` else {
+        guard let self = self else {
           promise(.failure(NetworkError.unknown))
           return
         }
