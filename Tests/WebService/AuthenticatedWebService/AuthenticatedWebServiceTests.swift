@@ -66,7 +66,7 @@ class AuthenticatedWebServiceTests: XCTestCase {
     let request = URLRequest(url: URL(string: "foo.com")!)
     webService = AuthenticatedWebService(urlSession: session,
                                          tokenProvider: tokenProvider,
-                                         authorizationHeaderScheme: .basic)
+                                         configuration: AuthenticatedWebServiceConfiguration(authorizationHeaderScheme: .basic))
     session.result = ((Data(), 200), nil)
     tokenProvider.accessToken.value = "someToken"
 
@@ -79,7 +79,7 @@ class AuthenticatedWebServiceTests: XCTestCase {
     let request = URLRequest(url: URL(string: "foo.com")!)
     webService = AuthenticatedWebService(urlSession: session,
                                          tokenProvider: tokenProvider,
-                                         authorizationHeaderScheme: .bearer)
+                                         configuration: AuthenticatedWebServiceConfiguration(authorizationHeaderScheme: .bearer))
 
     let encodedJSON = try! encoder.encode(["name": "value"])
     session.result = ((encodedJSON, 200), nil)
@@ -229,6 +229,51 @@ class AuthenticatedWebServiceTests: XCTestCase {
       (200, .input(nil)),
       (200, .input("newToken")),
       (220, .input("invalidToken2")),]
+
+    XCTAssertEqual(expected, subscriber.recordedOutput)
+  }
+
+  func test_givenAuthenticatedWebService_whenRefreshTriggerErrorsDontMatch_thenShouldNotAttemptTokenRefresh() {
+    let testScheduler = TestScheduler(initialClock: 0)
+    let request = URLRequest(url: URL(string: "foo.com")!)
+    let expectation1 = self.expectation(description: "authentication stream test expectation1")
+
+    // AuthenticatedWebService triggers token refresh, if the thrown error `Network.unauthorized` is matching
+    // to the provided `refreshTriggerErrors: [Error]` in the configuration body below
+    webService = AuthenticatedWebService(urlSession: session,
+                                         tokenProvider: tokenProvider,
+                                         configuration: AuthenticatedWebServiceConfiguration(authorizationHeaderScheme: .basic,
+                                                                                             refreshTriggerErrors: [NetworkError.corruptUrl]))
+    self.session.result = ((Data(), 401), nil)
+
+    testScheduler.schedule(after: 100) {
+      self.tokenProvider.accessToken.value = "invalidToken"
+
+      self.webService.execute(urlRequest: request)
+        .sink(receiveCompletion: {
+          if case let .failure(error as NetworkError) = $0 {
+            XCTAssertEqual(error, NetworkError.unauthorized)
+            XCTAssertEqual(self.tokenProvider.methodCallStack, [])
+            expectation1.fulfill()
+          }
+        },
+              receiveValue: { _ in
+                XCTFail("No value should be received")
+        })
+        .store(in: &self.subscriptions)
+    }
+
+    let subscriber = testScheduler.createTestableSubscriber(String?.self, Never.self)
+    self.tokenProvider.accessToken.subscribe(subscriber)
+
+    testScheduler.resume()
+
+    waitForExpectations(timeout: 2)
+
+    let expected: TestSequence<String?, Never> = [
+      (0, .subscription),
+      (0, .input(nil)),
+      (100, .input("invalidToken"))]
 
     XCTAssertEqual(expected, subscriber.recordedOutput)
   }
