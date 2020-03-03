@@ -31,18 +31,29 @@ public enum AuthorizationHeaderScheme: String {
   case none = ""
 }
 
+public struct AuthenticatedWebServiceConfiguration {
+  let authorizationHeaderScheme: AuthorizationHeaderScheme
+  let refreshTriggerErrors: [Error]
+
+  public init(authorizationHeaderScheme: AuthorizationHeaderScheme = .none,
+              refreshTriggerErrors: [Error] = [NetworkError.unauthorized]) {
+    self.authorizationHeaderScheme = authorizationHeaderScheme
+    self.refreshTriggerErrors = refreshTriggerErrors
+  }
+}
+
 open class AuthenticatedWebService: WebService {
   private let authenticationQueue = DispatchQueue(label: "authentication.queue")
   private let tokenProvider: AuthenticationTokenProvidable
-  private let authorizationHeaderScheme: AuthorizationHeaderScheme
+  private let configuration: AuthenticatedWebServiceConfiguration
 
   public init(urlSession: SessionPublisherProtocol = URLSession(configuration: URLSessionConfiguration.ephemeral,
-                                                         delegate: nil,
-                                                         delegateQueue: nil),
-       tokenProvider: AuthenticationTokenProvidable,
-       authorizationHeaderScheme: AuthorizationHeaderScheme = .none) {
+                                                                delegate: nil,
+                                                                delegateQueue: nil),
+              tokenProvider: AuthenticationTokenProvidable,
+              configuration: AuthenticatedWebServiceConfiguration = AuthenticatedWebServiceConfiguration()) {
     self.tokenProvider = tokenProvider
-    self.authorizationHeaderScheme = authorizationHeaderScheme
+    self.configuration = configuration
     super.init(urlSession: urlSession)
   }
   
@@ -58,7 +69,7 @@ open class AuthenticatedWebService: WebService {
       return Fail<T, Error>(error: NetworkError.unauthorized).eraseToAnyPublisher()
     }
     
-    urlRequest.setValue(self.authorizationHeaderScheme.rawValue + accessToken, forHTTPHeaderField: "Authorization")
+    urlRequest.setValue(self.configuration.authorizationHeaderScheme.rawValue + accessToken, forHTTPHeaderField: "Authorization")
     
     return super.execute(urlRequest: urlRequest)
       .catch { [weak self] error -> AnyPublisher<T, Error> in
@@ -66,7 +77,7 @@ open class AuthenticatedWebService: WebService {
           return Fail<T, Error>(error: NetworkError.unknown).eraseToAnyPublisher()
         }
 
-        if error as? NetworkError == .unauthorized {
+        if self.configuration.refreshTriggerErrors.contains(where: { return $0.reflectedString == error.reflectedString }){
           self.retrySynchronizedTokenRefresh()
 
           return self.execute(urlRequest: urlRequest)
@@ -90,7 +101,7 @@ open class AuthenticatedWebService: WebService {
       return Fail<Void, Error>(error: NetworkError.unauthorized).eraseToAnyPublisher()
     }
     
-    urlRequest.setValue(self.authorizationHeaderScheme.rawValue + accessToken, forHTTPHeaderField: "Authorization")
+    urlRequest.setValue(self.configuration.authorizationHeaderScheme.rawValue + accessToken, forHTTPHeaderField: "Authorization")
     
     return super.execute(urlRequest: urlRequest)
       .catch { [weak self] error -> AnyPublisher<Void, Error> in
@@ -98,7 +109,7 @@ open class AuthenticatedWebService: WebService {
           return Fail<Void, Error>(error: NetworkError.unknown).eraseToAnyPublisher()
         }
 
-        if error as? NetworkError == .unauthorized {
+        if self.configuration.refreshTriggerErrors.contains(where: { return $0.reflectedString == error.reflectedString }){
           self.retrySynchronizedTokenRefresh()
 
           return self.execute(urlRequest: urlRequest)
@@ -123,5 +134,11 @@ open class AuthenticatedWebService: WebService {
         .store(in: &self.subscriptions)
       dispatchGroup.wait()
     }
+  }
+}
+
+public extension Error {
+  var reflectedString: String {
+    return String(reflecting: self)
   }
 }

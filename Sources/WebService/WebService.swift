@@ -72,9 +72,9 @@ CustomDecodable{
             }
             return try self.decode(data: $0.data, type: T.self)
         }
-        .sink(receiveCompletion: { (completion: Subscribers.Completion<Error>) in
-          if case let .failure(networkError as NetworkError) = completion {
-            promise(.failure(networkError))
+        .sink(receiveCompletion: {
+          if case let .failure(error) = $0 {
+            promise(.failure(error))
           }
         },
               receiveValue: { promise(.success($0)) })
@@ -99,9 +99,9 @@ CustomDecodable{
             try self.mapHttpResponseCodes(output: $0)
             return
         }
-        .sink(receiveCompletion: { (completion: Subscribers.Completion<Error>) in
-          if case let .failure(networkError as NetworkError) = completion {
-            promise(.failure(networkError))
+        .sink(receiveCompletion: {
+          if case let .failure(error) = $0 {
+            promise(.failure(error))
           }
         },
               receiveValue: { promise(.success($0)) })
