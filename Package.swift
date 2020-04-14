@@ -11,6 +11,7 @@ let package = Package(
     products: [
         .library(
             name: "fusion",
+            type: .dynamic,
             targets: ["fusion"]),
     ],
     dependencies: [
