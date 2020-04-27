@@ -32,7 +32,7 @@ public protocol SessionPublisherProtocol: AnyObject {
 extension URLSession: SessionPublisherProtocol {
   public func dataTaskPublisher(for request: URLRequest) -> AnyPublisher<(data: Data, response: URLResponse), Error> {
     self.dataTaskPublisher(for: request)
-    .receive(on: DispatchQueue.main)
+    .subscribe(on: DispatchQueue.global())
     .mapError { NetworkError.urlError($0) }
     .eraseToAnyPublisher()
   }

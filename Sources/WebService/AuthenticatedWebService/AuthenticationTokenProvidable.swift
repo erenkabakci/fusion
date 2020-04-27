@@ -25,10 +25,13 @@
 import Combine
 import Foundation
 
+public typealias AccessToken = String
+public typealias RefreshToken = String
+
 public protocol AuthenticationTokenProvidable: AnyObject {
-  var accessToken: CurrentValueSubject<String?, Never> { get }
-  var refreshToken: CurrentValueSubject<String?, Never> { get }
-  func reissueAccessToken() -> AnyPublisher<Never, Error>
+  var accessToken: CurrentValueSubject<AccessToken?, Never> { get }
+  var refreshToken: CurrentValueSubject<RefreshToken?, Never> { get }
+  func reissueAccessToken() -> AnyPublisher<AccessToken, Error>
   func invalidateAccessToken()
   func invalidateRefreshToken()
 }

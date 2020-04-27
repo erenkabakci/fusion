@@ -56,10 +56,17 @@ class AuthenticatedWebServiceTests: XCTestCase {
                                          tokenProvider: tokenProvider)
     session.result = ((Data(), 200), nil)
     tokenProvider.accessToken.value = "someToken"
+    let expectation = self.expectation(description: "No authorization header scheme test has failed")
 
-    _ = webService.execute(urlRequest: request).sink(receiveCompletion: { _ in }, receiveValue: { _ in })
+    webService.execute(urlRequest: request)
+      .sink(receiveCompletion: { _ in },
+            receiveValue: { _ in
+              XCTAssertEqual(self.session.finalUrlRequest?.allHTTPHeaderFields?["Authorization"], "someToken")
+              expectation.fulfill()
+      })
+      .store(in: &subscriptions)
 
-    XCTAssertEqual(session.finalUrlRequest?.allHTTPHeaderFields?["Authorization"], "someToken")
+    waitForExpectations(timeout: 0.5)
   }
 
   func test_givenAuthenticatedWebService_whenAuthorizationHeaderSchemeBasic_shouldAppendBasicHeader() {
@@ -69,10 +76,17 @@ class AuthenticatedWebServiceTests: XCTestCase {
                                          configuration: AuthenticatedWebServiceConfiguration(authorizationHeaderScheme: .basic))
     session.result = ((Data(), 200), nil)
     tokenProvider.accessToken.value = "someToken"
+    let expectation = self.expectation(description: "Basic authorization header scheme test has failed")
 
-    _ = webService.execute(urlRequest: request).sink(receiveCompletion: { _ in }, receiveValue: { _ in })
+    webService.execute(urlRequest: request)
+      .sink(receiveCompletion: { _ in },
+            receiveValue: { _ in
+              XCTAssertEqual(self.session.finalUrlRequest?.allHTTPHeaderFields?["Authorization"], "Basic someToken")
+              expectation.fulfill()
+      })
+      .store(in: &subscriptions)
 
-    XCTAssertEqual(session.finalUrlRequest?.allHTTPHeaderFields?["Authorization"], "Basic someToken")
+    waitForExpectations(timeout: 0.5)
   }
 
   func test_givenAuthenticatedWebService_whenAuthorizationHeaderSchemeBearer_shouldAppendBearerHeader() {
@@ -84,10 +98,17 @@ class AuthenticatedWebServiceTests: XCTestCase {
     let encodedJSON = try! encoder.encode(["name": "value"])
     session.result = ((encodedJSON, 200), nil)
     tokenProvider.accessToken.value = "someToken"
+    let expectation = self.expectation(description: "Bearer authorization header scheme test has failed")
 
-    _ = webService.execute(urlRequest: request).sink(receiveCompletion: { _ in }, receiveValue: { (_: SampleResponse) in })
+    webService.execute(urlRequest: request)
+      .sink(receiveCompletion: { _ in },
+            receiveValue: { _ in
+              XCTAssertEqual(self.session.finalUrlRequest?.allHTTPHeaderFields?["Authorization"], "Bearer someToken")
+              expectation.fulfill()
+      })
+      .store(in: &subscriptions)
 
-    XCTAssertEqual(session.finalUrlRequest?.allHTTPHeaderFields?["Authorization"], "Bearer someToken")
+    waitForExpectations(timeout: 0.5)
   }
 
   func test_givenAuthenticatedWebService_whenParallelRequestsFired_thenShouldNotRaceForTokenRefresh() {
@@ -118,34 +139,33 @@ class AuthenticatedWebServiceTests: XCTestCase {
     // given second call, has an invalid token
     testScheduler.schedule(after: 200) {
       // Demonstrate two parallel requests not racing each other to refresh the token
+      print("invalid token is set")
       self.tokenProvider.accessToken.value = "invalidToken"
 
       self.webService.execute(urlRequest: request)
         .sink(receiveCompletion: {
-          if case .finished = $0 {
-            expectation1.fulfill()
-          }
-          else {
+          if case .failure = $0 {
             XCTFail("should not receive failure since the token is refreshed")
           }
         },
               receiveValue: { _ in
                 XCTAssertEqual(self.tokenProvider.methodCallStack, ["invalidateAccessToken()", "reissueAccessToken()"])
+                expectation1.fulfill()
         })
         .store(in: &self.subscriptions)
 
       // a parallel call should succesfully execute since the token is refreshed by the previous call
       self.webService.execute(urlRequest: request)
+      .receive(on: testScheduler)
         .sink(receiveCompletion: {
-          if case .finished = $0 {
-            expectation2.fulfill()
-          } else {
+          if case .failure = $0 {
             XCTFail("should not receive failure since the token is refreshed")
           }
         },
               receiveValue: { (_: SampleResponse) in
                 // Reissuing is called only once even though there are two parallel calls
                 XCTAssertEqual(self.tokenProvider.methodCallStack, ["invalidateAccessToken()", "reissueAccessToken()"])
+                expectation2.fulfill()
         })
         .store(in: &self.subscriptions)
     }
@@ -181,6 +201,7 @@ class AuthenticatedWebServiceTests: XCTestCase {
     // first call should refresh the token with a valid one and override the previously set invalid token
     testScheduler.schedule(after: 200) {
       self.webService.execute(urlRequest: request)
+        .receive(on: testScheduler)
         .sink(receiveCompletion: {
           if case .finished = $0 {
             expectation1.fulfill()
@@ -195,12 +216,13 @@ class AuthenticatedWebServiceTests: XCTestCase {
         .store(in: &self.subscriptions)
     }
 
-    // second call should execute normally even if it has an invalid token, since the previous call is already refreshing the token for this one as wel
+    // second call should execute normally even if it has an invalid token, since the previous call is already refreshing the token for this one as well
     testScheduler.schedule(after: 220) {
       // Demonstrate two consecutive requests not racing each other to refresh the token
       self.tokenProvider.accessToken.value = "invalidToken2"
 
       self.webService.execute(urlRequest: request)
+        .receive(on: testScheduler)
         .sink(receiveCompletion: {
           if case .finished = $0 {
             expectation2.fulfill()
@@ -289,13 +311,18 @@ private class MockAuthenticatedServiceSession: MockSession {
 
 private class MockTokenProvider: AuthenticationTokenProvidable {
   private(set) var methodCallStack = [String]()
-  var accessToken: CurrentValueSubject<String?, Never> = CurrentValueSubject(nil)
-  var refreshToken: CurrentValueSubject<String?, Never> = CurrentValueSubject(nil)
+  var accessToken: CurrentValueSubject<AccessToken?, Never> = CurrentValueSubject(nil)
+  var refreshToken: CurrentValueSubject<RefreshToken?, Never> = CurrentValueSubject(nil)
 
-  func reissueAccessToken() -> AnyPublisher<Never, Error> {
-    accessToken.send("newToken")
-    methodCallStack.append(#function)
-    return Empty<Never, Error>(completeImmediately: true).eraseToAnyPublisher()
+  func reissueAccessToken() -> AnyPublisher<AccessToken, Error> {
+      self.accessToken.send("newToken")
+      self.methodCallStack.append(#function)
+
+     return Deferred {
+        Future <AccessToken, Error> { promise in
+          promise(.success("newToken"))
+        }
+    }.eraseToAnyPublisher()
   }
 
   func invalidateAccessToken() {
