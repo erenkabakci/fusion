@@ -15,4 +15,4 @@ jobs:
     - name: Build
       run: swift build -v
     - name: Run tests
-      run: swift test -v
+      run: xcodebuild test -project fusion.xcodeproj -scheme fusion -destination 'platform=iOS Simulator,name=iPhone 11'
