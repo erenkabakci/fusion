@@ -20,6 +20,7 @@ class AsyncTokenRefreshTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
+    subscriptions = Set<AnyCancellable>()
     session = MockAuthenticatedServiceSession()
     tokenProvider = MockTokenProvider()
     subscriptions = Set<AnyCancellable>()
@@ -29,7 +30,7 @@ class AsyncTokenRefreshTests: XCTestCase {
     let encodedData = try! self.encoder.encode(["id": "value"])
     tokenProvider.accessToken
       .sink(receiveValue: {
-        if $0 == "newToken" {
+        if $0 == "newAsyncToken" {
           print("Change session response to 200")
           self.session.result = ((encodedData, 200), nil)
         }
@@ -103,12 +104,12 @@ private class MockTokenProvider: AuthenticationTokenProvidable {
   func reissueAccessToken() -> AnyPublisher<AccessToken, Error> {
     // replicate a slow & asnyc token refresh
       sleep(2)
-      self.accessToken.send("newToken")
+      self.accessToken.send("newAsyncToken")
       self.methodCallStack.append(#function)
 
      return Deferred {
         Future <AccessToken, Error> { promise in
-          promise(.success("newToken"))
+          promise(.success("newAsyncToken"))
         }
     }.eraseToAnyPublisher()
   }

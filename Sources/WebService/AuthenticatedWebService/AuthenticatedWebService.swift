@@ -74,7 +74,9 @@ open class AuthenticatedWebService: WebService {
         .flatMap { accessToken -> AnyPublisher<T, Error> in
           return appendTokenAndExecute(accessToken: accessToken)
       }
-    }.catch { [weak self] error -> AnyPublisher<T, Error> in
+    }
+    .timeout(10, scheduler: DispatchQueue.main, customError: { NetworkError.timeout })
+    .catch { [weak self] error -> AnyPublisher<T, Error> in
       guard let self = self else {
         return Fail<T, Error>(error: NetworkError.unknown).eraseToAnyPublisher()
       }
@@ -107,8 +109,10 @@ open class AuthenticatedWebService: WebService {
         .setFailureType(to: Error.self)
         .flatMap { accessToken -> AnyPublisher<Void, Error> in
           return appendTokenAndExecute(accessToken: accessToken)
-      }
-    }.catch { [weak self] error -> AnyPublisher<Void, Error> in
+        }.eraseToAnyPublisher()
+    }
+    .timeout(10, scheduler: DispatchQueue.main, customError: { NetworkError.timeout })
+    .catch { [weak self] error -> AnyPublisher<Void, Error> in
       guard let self = self else {
         return Fail<Void, Error>(error: NetworkError.unknown).eraseToAnyPublisher()
       }

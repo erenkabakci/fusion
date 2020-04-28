@@ -30,6 +30,7 @@ public enum NetworkError: Error, Equatable {
   case urlError(URLError?)
   case parsingFailure
   case corruptUrl
+  case timeout
   case unauthorized
   case forbidden
   case generic(HttpStatusCode)
