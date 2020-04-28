@@ -35,16 +35,18 @@ open class MockSession: SessionPublisherProtocol {
   public func dataTaskPublisher(for urlRequest: URLRequest) -> AnyPublisher<(data: Data, response: URLResponse), Error> {
     methodCallStack.append(#function)
     finalUrlRequest = urlRequest
-    return Future<(data: Data, response: URLResponse), Error> { promise in
-      usleep(20)
-      if let successResponse = self.result?.0 {
-        promise(.success((successResponse.0,
-                          HTTPURLResponse(url: URL(string: "foo.com")!,
-                                          statusCode: successResponse.1,
-                                          httpVersion: nil,
-                                          headerFields: nil)!)))
-      } else if let errorResponse = self.result?.1 {
-        promise(.failure(NetworkError.urlError(errorResponse)))
+    return Deferred {
+      Future<(data: Data, response: URLResponse), Error> { promise in
+        usleep(20)
+        if let successResponse = self.result?.0 {
+          promise(.success((successResponse.0,
+                            HTTPURLResponse(url: URL(string: "foo.com")!,
+                                            statusCode: successResponse.1,
+                                            httpVersion: nil,
+                                            headerFields: nil)!)))
+        } else if let errorResponse = self.result?.1 {
+          promise(.failure(NetworkError.urlError(errorResponse)))
+        }
       }
     }.eraseToAnyPublisher()
   }

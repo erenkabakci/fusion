@@ -47,7 +47,7 @@
 		3A71BE7023F35911009D092E /* WebServiceHttpStatusCodeTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = WebServiceHttpStatusCodeTests.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3A71BE7223F35DA4009D092E /* WebServiceStreamTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = WebServiceStreamTests.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3A7DD7CA23F449F2001AED72 /* AuthenticatedWebServiceTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = AuthenticatedWebServiceTests.swift; sourceTree = "<group>"; tabWidth = 2; };
-		3AC7B89A23FD695500BCE0FE /* AsyncTokenRefreshTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncTokenRefreshTests.swift; sourceTree = "<group>"; };
+		3AC7B89A23FD695500BCE0FE /* AsyncTokenRefreshTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = AsyncTokenRefreshTests.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3AC7B89C23FD977D00BCE0FE /* ThreadSafePropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadSafePropertyWrapper.swift; sourceTree = "<group>"; };
 		3AE34B1723F2056B00B453D7 /* fusion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = fusion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AE34B1B23F2056B00B453D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
