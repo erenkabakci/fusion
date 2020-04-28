@@ -13,7 +13,7 @@
 //
 //  The above copyright notice and this permission notice shall be included in all
 //  copies or substantial portions of the Software.
-//  
+//
 //  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 //  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 //  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -35,7 +35,7 @@ CustomDecodable{
   public let jsonDecoder: JSONDecoder = JSONDecoder()
   private let session: SessionPublisherProtocol
   @ThreadSafe open var subscriptions = Set<AnyCancellable>()
-  
+
   public init(urlSession: SessionPublisherProtocol = URLSession(configuration: URLSessionConfiguration.ephemeral,
                                                                 delegate: nil,
                                                                 delegateQueue: nil)) {
@@ -49,9 +49,11 @@ CustomDecodable{
           return Fail(error: NetworkError.unknown).eraseToAnyPublisher()
         }
         return CurrentValueSubject((output.data, httpResponse)).eraseToAnyPublisher()
-    }.eraseToAnyPublisher()
+    }
+    .receive(on: DispatchQueue.main)
+    .eraseToAnyPublisher()
   }
-  
+
   public func execute<T>(urlRequest: URLRequest) -> AnyPublisher<T, Error> where T : Decodable {
     Deferred {
       Future { [weak self] promise in
@@ -62,8 +64,9 @@ CustomDecodable{
 
         var urlRequest = urlRequest
         urlRequest.appendAdditionalHeaders(headers: self.defaultHttpHeaders)
-        
+
         self.rawResponse(urlRequest: urlRequest)
+        .subscribe(on: DispatchQueue.global())
           .tryMap {
             try self.mapHttpResponseCodes(output: $0)
 
@@ -80,9 +83,11 @@ CustomDecodable{
               receiveValue: { promise(.success($0)) })
           .store(in: &self.subscriptions)
       }
-    }.eraseToAnyPublisher()
+    }
+    .receive(on: DispatchQueue.main)
+    .eraseToAnyPublisher()
   }
-  
+
   public func execute(urlRequest: URLRequest) -> AnyPublisher<Void, Error> {
     Deferred {
       Future { [weak self] promise in
@@ -90,11 +95,12 @@ CustomDecodable{
           promise(.failure(NetworkError.unknown))
           return
         }
-        
+
         var urlRequest = urlRequest
         urlRequest.appendAdditionalHeaders(headers: self.defaultHttpHeaders)
-        
+
         self.rawResponse(urlRequest: urlRequest)
+            .subscribe(on: DispatchQueue.global())
           .tryMap {
             try self.mapHttpResponseCodes(output: $0)
             return
@@ -107,7 +113,9 @@ CustomDecodable{
               receiveValue: { promise(.success($0)) })
           .store(in: &self.subscriptions)
       }
-    }.eraseToAnyPublisher()
+    }
+    .receive(on: DispatchQueue.main)
+    .eraseToAnyPublisher()
   }
 
   open func mapHttpResponseCodes(output: (data:Data, response: HTTPURLResponse)) throws {

@@ -30,7 +30,8 @@
       codeCoverageEnabled = "YES">
       <Testables>
          <TestableReference
-            skipped = "NO">
+            skipped = "NO"
+            parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "3AE34B1F23F2056B00B453D7"
@@ -38,6 +39,11 @@
                BlueprintName = "fusionTests"
                ReferencedContainer = "container:fusion.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "AuthenticatedWebServiceTests/test_givenAuthenticatedWebService_whenContinousRequestsFired_thenShouldNotRaceForTokenRefresh()">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>
