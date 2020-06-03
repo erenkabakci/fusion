@@ -75,7 +75,7 @@ open class AuthenticatedWebService: WebService {
           return appendTokenAndExecute(accessToken: accessToken)
       }
     }
-    .timeout(10, scheduler: DispatchQueue.main, customError: { NetworkError.timeout })
+    .timeout(.init(floatLiteral: urlRequest.timeoutInterval), scheduler: DispatchQueue.main, customError: { NetworkError.timeout })
     .catch { [weak self] error -> AnyPublisher<T, Error> in
       guard let self = self else {
         return Fail<T, Error>(error: NetworkError.unknown).eraseToAnyPublisher()
@@ -111,7 +111,7 @@ open class AuthenticatedWebService: WebService {
           return appendTokenAndExecute(accessToken: accessToken)
         }.eraseToAnyPublisher()
     }
-    .timeout(10, scheduler: DispatchQueue.main, customError: { NetworkError.timeout })
+    .timeout(.init(floatLiteral: urlRequest.timeoutInterval), scheduler: DispatchQueue.main, customError: { NetworkError.timeout })
     .catch { [weak self] error -> AnyPublisher<Void, Error> in
       guard let self = self else {
         return Fail<Void, Error>(error: NetworkError.unknown).eraseToAnyPublisher()

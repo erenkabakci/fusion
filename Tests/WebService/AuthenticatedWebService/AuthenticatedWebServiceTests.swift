@@ -114,7 +114,7 @@ class AuthenticatedWebServiceTests: XCTestCase {
 
   func test_givenAuthenticatedWebService_whenTimeoutWithInitialTokenlessState_andHavingInvalidToken_thenNextRequestShouldRefreshTokenOnce() {
     let testScheduler = TestScheduler(initialClock: 0)
-    let request = URLRequest(url: URL(string: "foo.com")!)
+    let request = URLRequest(url: URL(string: "foo.com")!, timeoutInterval: 10)
     let expectation1 = self.expectation(description: "authentication stream test expectation1")
     let expectation2 = self.expectation(description: "authentication stream test expectation2")
 
