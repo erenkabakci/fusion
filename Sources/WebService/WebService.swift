@@ -34,7 +34,6 @@ CustomDecodable{
   public var defaultHttpHeaders: [String : String] = [:]
   public let jsonDecoder: JSONDecoder = JSONDecoder()
   private let session: SessionPublisherProtocol
-  @ThreadSafe open var subscriptions = Set<AnyCancellable>()
 
   public init(urlSession: SessionPublisherProtocol = URLSession(configuration: URLSessionConfiguration.ephemeral,
                                                                 delegate: nil,
@@ -65,7 +64,7 @@ CustomDecodable{
         var urlRequest = urlRequest
         urlRequest.appendAdditionalHeaders(headers: self.defaultHttpHeaders)
 
-        self.rawResponse(urlRequest: urlRequest)
+        _ = self.rawResponse(urlRequest: urlRequest)
         .subscribe(on: DispatchQueue.global())
           .tryMap {
             try self.mapHttpResponseCodes(output: $0)
@@ -81,7 +80,6 @@ CustomDecodable{
           }
         },
               receiveValue: { promise(.success($0)) })
-          .store(in: &self.subscriptions)
       }
     }
     .receive(on: DispatchQueue.main)
@@ -99,7 +97,7 @@ CustomDecodable{
         var urlRequest = urlRequest
         urlRequest.appendAdditionalHeaders(headers: self.defaultHttpHeaders)
 
-        self.rawResponse(urlRequest: urlRequest)
+        _ = self.rawResponse(urlRequest: urlRequest)
             .subscribe(on: DispatchQueue.global())
           .tryMap {
             try self.mapHttpResponseCodes(output: $0)
@@ -111,7 +109,6 @@ CustomDecodable{
           }
         },
               receiveValue: { promise(.success($0)) })
-          .store(in: &self.subscriptions)
       }
     }
     .receive(on: DispatchQueue.main)
