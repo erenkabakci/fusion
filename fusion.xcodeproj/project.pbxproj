@@ -461,6 +461,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1.0;
+				OTHER_CFLAGS = "-fembed-bitcode-marker";
 				PRODUCT_BUNDLE_IDENTIFIER = com.fusion;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -488,6 +489,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1.0;
+				OTHER_CFLAGS = "-fembed-bitcode-marker";
 				PRODUCT_BUNDLE_IDENTIFIER = com.fusion;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
