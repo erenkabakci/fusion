@@ -1,5 +1,5 @@
 //
-//  StatusCodeResolvable.swift
+//  ResponseCarrier.swift
 //  fusion
 //
 //  Copyright (c) 2020 Eren Kabakçı
@@ -24,6 +24,13 @@
 
 import Foundation
 
-public protocol StatusCodeResolvable: AnyObject {
-  func mapHttpResponseCodes(output: (data:Data, response: HTTPURLResponse)) throws
+public protocol ResponseCarrierProtocol {
+  associatedtype T
+  var body: T { get }
+  var metadata: HTTPURLResponse { get }
+}
+
+public struct ResponseCarrier<T>: ResponseCarrierProtocol {
+  public let body: T
+  public let metadata: HTTPURLResponse
 }

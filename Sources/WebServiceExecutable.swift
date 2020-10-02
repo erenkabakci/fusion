@@ -26,6 +26,5 @@ import Combine
 import Foundation
 
 public protocol WebServiceExecutable: AnyObject {
-  func execute<T: Decodable>(urlRequest: URLRequest) -> AnyPublisher<T, Error>
-  func execute(urlRequest: URLRequest) -> AnyPublisher<Void, Error>
+  func execute(urlRequest: URLRequest) -> AnyPublisher<(data: Data, response: HTTPURLResponse), Error>
 }

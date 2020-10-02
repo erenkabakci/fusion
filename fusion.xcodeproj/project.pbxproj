@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A6CB096252768AB002FDC82 /* Publisher+WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6CB095252768AB002FDC82 /* Publisher+WebService.swift */; };
+		3A6CB09825277886002FDC82 /* ResponseCarrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6CB09725277886002FDC82 /* ResponseCarrier.swift */; };
 		3A71BE6823F2B372009D092E /* HttpHeaderModifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE6723F2B372009D092E /* HttpHeaderModifiable.swift */; };
 		3A71BE6A23F3489C009D092E /* WebServiceHappyPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE6923F3489C009D092E /* WebServiceHappyPathTests.swift */; };
 		3A71BE6C23F34BCA009D092E /* MockSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE6B23F34BCA009D092E /* MockSession.swift */; };
@@ -22,11 +24,8 @@
 		3AE34B3423F2124100B453D7 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3323F2124100B453D7 /* NetworkError.swift */; };
 		3AE34B3623F2143900B453D7 /* WebServiceExecutable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3523F2143900B453D7 /* WebServiceExecutable.swift */; };
 		3AE34B3823F214C100B453D7 /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3723F214C100B453D7 /* WebService.swift */; };
-		3AE34B3A23F2197300B453D7 /* CustomDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3923F2197300B453D7 /* CustomDecodable.swift */; };
-		3AE34B3D23F21BA000B453D7 /* StatusCodeResolvable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3C23F21BA000B453D7 /* StatusCodeResolvable.swift */; };
 		3AE34B3F23F2232100B453D7 /* AuthenticatedWebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3E23F2232100B453D7 /* AuthenticatedWebService.swift */; };
 		3AE34B4323F2245A00B453D7 /* AuthenticationTokenProvidable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B4223F2245A00B453D7 /* AuthenticationTokenProvidable.swift */; };
-		3AE34B4523FB53AD00B453D7 /* RawResponseRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B4423FB53AD00B453D7 /* RawResponseRepresentable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3A6CB095252768AB002FDC82 /* Publisher+WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+WebService.swift"; sourceTree = "<group>"; };
+		3A6CB09725277886002FDC82 /* ResponseCarrier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseCarrier.swift; sourceTree = "<group>"; };
 		3A71BE6723F2B372009D092E /* HttpHeaderModifiable.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = HttpHeaderModifiable.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3A71BE6923F3489C009D092E /* WebServiceHappyPathTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = WebServiceHappyPathTests.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3A71BE6B23F34BCA009D092E /* MockSession.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = MockSession.swift; sourceTree = "<group>"; tabWidth = 2; };
@@ -57,11 +58,8 @@
 		3AE34B3323F2124100B453D7 /* NetworkError.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3AE34B3523F2143900B453D7 /* WebServiceExecutable.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = WebServiceExecutable.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3AE34B3723F214C100B453D7 /* WebService.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; tabWidth = 2; };
-		3AE34B3923F2197300B453D7 /* CustomDecodable.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = CustomDecodable.swift; sourceTree = "<group>"; tabWidth = 2; };
-		3AE34B3C23F21BA000B453D7 /* StatusCodeResolvable.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = StatusCodeResolvable.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3AE34B3E23F2232100B453D7 /* AuthenticatedWebService.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = AuthenticatedWebService.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3AE34B4223F2245A00B453D7 /* AuthenticationTokenProvidable.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = AuthenticationTokenProvidable.swift; sourceTree = "<group>"; tabWidth = 2; };
-		3AE34B4423FB53AD00B453D7 /* RawResponseRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawResponseRepresentable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,12 +138,11 @@
 				3AE34B3323F2124100B453D7 /* NetworkError.swift */,
 				3AE34B3123F211B500B453D7 /* SessionPublisherProtocol.swift */,
 				3AE34B3523F2143900B453D7 /* WebServiceExecutable.swift */,
-				3AE34B3923F2197300B453D7 /* CustomDecodable.swift */,
-				3AE34B3C23F21BA000B453D7 /* StatusCodeResolvable.swift */,
 				3A71BE6723F2B372009D092E /* HttpHeaderModifiable.swift */,
-				3AE34B4423FB53AD00B453D7 /* RawResponseRepresentable.swift */,
 				3AE34B4123F2235F00B453D7 /* WebService */,
 				3AC7B89C23FD977D00BCE0FE /* ThreadSafePropertyWrapper.swift */,
+				3A6CB095252768AB002FDC82 /* Publisher+WebService.swift */,
+				3A6CB09725277886002FDC82 /* ResponseCarrier.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -284,15 +281,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3AE34B3A23F2197300B453D7 /* CustomDecodable.swift in Sources */,
-				3AE34B3D23F21BA000B453D7 /* StatusCodeResolvable.swift in Sources */,
 				3AE34B3223F211B500B453D7 /* SessionPublisherProtocol.swift in Sources */,
 				3A71BE6823F2B372009D092E /* HttpHeaderModifiable.swift in Sources */,
+				3A6CB09825277886002FDC82 /* ResponseCarrier.swift in Sources */,
 				3AC7B89D23FD977D00BCE0FE /* ThreadSafePropertyWrapper.swift in Sources */,
-				3AE34B4523FB53AD00B453D7 /* RawResponseRepresentable.swift in Sources */,
 				3AE34B3F23F2232100B453D7 /* AuthenticatedWebService.swift in Sources */,
 				3AE34B3423F2124100B453D7 /* NetworkError.swift in Sources */,
 				3AE34B3623F2143900B453D7 /* WebServiceExecutable.swift in Sources */,
+				3A6CB096252768AB002FDC82 /* Publisher+WebService.swift in Sources */,
 				3AE34B3823F214C100B453D7 /* WebService.swift in Sources */,
 				3AE34B4323F2245A00B453D7 /* AuthenticationTokenProvidable.swift in Sources */,
 			);

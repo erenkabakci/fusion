@@ -24,15 +24,9 @@
 
 import Foundation
 
-public typealias HttpStatusCode = Int
-
-public enum NetworkError: Error, Equatable {
-  case urlError(URLError?)
-  case parsingFailure
-  case corruptUrl
-  case timeout
-  case unauthorized
-  case forbidden
-  case generic(HttpStatusCode)
-  case unknown
+public enum FusionError: Error, Equatable {
+  case corruptMetaData
+  case unauthorized(metadata: HTTPURLResponse? = nil)
+  case forbidden(metadata: HTTPURLResponse? = nil)
+  case generic(metadata: HTTPURLResponse)
 }
