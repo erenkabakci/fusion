@@ -33,17 +33,17 @@ public enum AuthorizationHeaderScheme: String {
 
 public struct AuthenticatedWebServiceConfiguration {
   let authorizationHeaderScheme: AuthorizationHeaderScheme
-  let refreshTriggerErrors: [NetworkError]
+  let refreshTriggerErrors: [FusionError]
 
   public init(authorizationHeaderScheme: AuthorizationHeaderScheme = .none,
-              refreshTriggerErrors: [NetworkError] = [NetworkError.unauthorized]) {
+              refreshTriggerErrors: [FusionError] = [FusionError.unauthorized()]) {
     self.authorizationHeaderScheme = authorizationHeaderScheme
     self.refreshTriggerErrors = refreshTriggerErrors
   }
 }
 
-open class AuthenticatedWebService: WebService {
-  private let authenticationQueue = DispatchQueue(label: "authentication.queue")
+public final class AuthenticatedWebService: WebService {
+  private let authenticationQueue = DispatchQueue(label: "com.fusion.authentication.queue")
   private let tokenProvider: AuthenticationTokenProvidable
   private let configuration: AuthenticatedWebServiceConfiguration
 
@@ -57,85 +57,37 @@ open class AuthenticatedWebService: WebService {
     super.init(urlSession: urlSession)
   }
 
-  override public func execute<T>(urlRequest: URLRequest) -> AnyPublisher<T, Error> where T : Decodable {
+  public override func execute(urlRequest: URLRequest) -> AnyPublisher<(data: Data, response: HTTPURLResponse), Error> {
     var urlRequest = urlRequest
 
-    func appendTokenAndExecute(accessToken: AccessToken) -> AnyPublisher<T, Error> {
+    func appendTokenAndExecute(accessToken: AccessToken) -> AnyPublisher<(data: Data, response: HTTPURLResponse), Error> {
       urlRequest.setValue(self.configuration.authorizationHeaderScheme.rawValue + accessToken, forHTTPHeaderField: "Authorization")
-      return super.execute(urlRequest: urlRequest)
-        .subscribe(on: DispatchQueue.global())
-        .eraseToAnyPublisher()
+      return super.execute(urlRequest: urlRequest).eraseToAnyPublisher()
     }
 
     return Deferred {
       self.tokenProvider.accessToken
         .compactMap { $0 }
         .setFailureType(to: Error.self)
-        .flatMap { accessToken -> AnyPublisher<T, Error> in
+        .flatMap { accessToken -> AnyPublisher<(data: Data, response: HTTPURLResponse), Error> in
           return appendTokenAndExecute(accessToken: accessToken)
-      }
+        }
     }
-    .catch { [weak self] error -> AnyPublisher<T, Error> in
-      guard let self = self else {
-        return Fail<T, Error>(error: NetworkError.unknown).eraseToAnyPublisher()
-      }
-
-      if self.configuration.refreshTriggerErrors.contains(where: { return $0.reflectedString == error.reflectedString }){
+    .catch { error -> AnyPublisher<(data: Data, response: HTTPURLResponse), Error> in
+      if self.configuration.refreshTriggerErrors.contains(where: { return $0 == error as? FusionError }){
         return self.retrySynchronizedTokenRefresh()
           .flatMap {
             appendTokenAndExecute(accessToken: $0)
-        }.eraseToAnyPublisher()
+          }
+          .eraseToAnyPublisher()
       }
-      return Fail<T, Error>(error: error).eraseToAnyPublisher()
+      return Fail<(data: Data, response: HTTPURLResponse), Error>(error: error).eraseToAnyPublisher()
     }
-    .receive(on: DispatchQueue.main)
-    .eraseToAnyPublisher()
-  }
-
-  override public func execute(urlRequest: URLRequest) -> AnyPublisher<Void, Error> {
-    var urlRequest = urlRequest
-
-    func appendTokenAndExecute(accessToken: AccessToken) -> AnyPublisher<Void, Error> {
-      urlRequest.setValue(self.configuration.authorizationHeaderScheme.rawValue + accessToken, forHTTPHeaderField: "Authorization")
-      return super.execute(urlRequest: urlRequest)
-        .subscribe(on: DispatchQueue.global())
-        .eraseToAnyPublisher()
-    }
-
-    return Deferred {
-      self.tokenProvider.accessToken
-        .compactMap { $0 }
-        .setFailureType(to: Error.self)
-        .flatMap { accessToken -> AnyPublisher<Void, Error> in
-          return appendTokenAndExecute(accessToken: accessToken)
-        }.eraseToAnyPublisher()
-    }
-    .catch { [weak self] error -> AnyPublisher<Void, Error> in
-      guard let self = self else {
-        return Fail<Void, Error>(error: NetworkError.unknown).eraseToAnyPublisher()
-      }
-
-      if self.configuration.refreshTriggerErrors.contains(where: { return $0.reflectedString == error.reflectedString }){
-        return self.retrySynchronizedTokenRefresh()
-          .flatMap {
-            appendTokenAndExecute(accessToken: $0)
-        }.eraseToAnyPublisher()
-      }
-      return Fail<Void, Error>(error: error).eraseToAnyPublisher()
-    }
-    .receive(on: DispatchQueue.main)
     .eraseToAnyPublisher()
   }
 
   private func retrySynchronizedTokenRefresh() -> AnyPublisher<AccessToken, Error> {
     tokenProvider.invalidateAccessToken()
-    return tokenProvider.reissueAccessToken()
-      .eraseToAnyPublisher()
-  }
-}
-
-public extension Error {
-  var reflectedString: String {
-    return String(reflecting: self)
+    return tokenProvider.reissueAccessToken().eraseToAnyPublisher()
   }
 }

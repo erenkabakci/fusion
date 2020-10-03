@@ -32,9 +32,9 @@ public extension Publisher where Self.Output == (data: Data, response: HTTPURLRe
         case 200 ... 399:
           break
         case 401:
-          throw FusionError.unauthorized()
+          throw FusionError.unauthorized(metadata: response)
         case 403:
-          throw FusionError.forbidden()
+          throw FusionError.forbidden(metadata: response)
         default:
           throw FusionError.generic(metadata: response)
       }

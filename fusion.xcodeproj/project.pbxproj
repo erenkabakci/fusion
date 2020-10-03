@@ -135,14 +135,14 @@
 		3AE34B3B23F21B7500B453D7 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				3A6CB09725277886002FDC82 /* ResponseCarrier.swift */,
 				3AE34B3323F2124100B453D7 /* NetworkError.swift */,
 				3AE34B3123F211B500B453D7 /* SessionPublisherProtocol.swift */,
 				3AE34B3523F2143900B453D7 /* WebServiceExecutable.swift */,
 				3A71BE6723F2B372009D092E /* HttpHeaderModifiable.swift */,
 				3AE34B4123F2235F00B453D7 /* WebService */,
-				3AC7B89C23FD977D00BCE0FE /* ThreadSafePropertyWrapper.swift */,
 				3A6CB095252768AB002FDC82 /* Publisher+WebService.swift */,
-				3A6CB09725277886002FDC82 /* ResponseCarrier.swift */,
+				3AC7B89C23FD977D00BCE0FE /* ThreadSafePropertyWrapper.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
