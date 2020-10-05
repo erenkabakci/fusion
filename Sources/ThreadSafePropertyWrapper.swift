@@ -26,7 +26,7 @@ import Foundation
 
 @propertyWrapper
 public struct ThreadSafe<Value> {
-    private let queue = DispatchQueue(label: "atomicAccess")
+    private let queue = DispatchQueue(label: "com.fusion.atomicAccess")
     private var value: Value
 
     public init(wrappedValue: Value) {

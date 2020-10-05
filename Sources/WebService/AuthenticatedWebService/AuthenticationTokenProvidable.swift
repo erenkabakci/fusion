@@ -29,9 +29,20 @@ public typealias AccessToken = String
 public typealias RefreshToken = String
 
 public protocol AuthenticationTokenProvidable: AnyObject {
-  var accessToken: AnyPublisher<AccessToken?, Never> { get }
-  var refreshToken: AnyPublisher<RefreshToken?, Never> { get }
+  var accessToken: CurrentValueSubject<AccessToken?, Never> { get }
+  var refreshToken: CurrentValueSubject<RefreshToken?, Never> { get }
   func reissueAccessToken() -> AnyPublisher<AccessToken, Error>
   func invalidateAccessToken()
   func invalidateRefreshToken()
+}
+
+extension AuthenticationTokenProvidable {
+  func invalidateRefreshToken() {
+    refreshToken.value = nil
+    accessToken.value = nil
+  }
+
+  func invalidateAccesstoken() {
+    accessToken.value = nil
+  }
 }

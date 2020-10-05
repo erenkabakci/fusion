@@ -65,19 +65,19 @@ public final class AuthenticatedWebService: WebService {
       return super.execute(urlRequest: urlRequest).eraseToAnyPublisher()
     }
 
+    guard let accessToken = self.tokenProvider.accessToken.value else {
+      return Fail<(data: Data, response: HTTPURLResponse), Error>(error: FusionError.unauthorized())
+        .eraseToAnyPublisher()
+    }
+
     return Deferred {
-      self.tokenProvider.accessToken
-        .compactMap { $0 }
-        .setFailureType(to: Error.self)
-        .flatMap { accessToken -> AnyPublisher<(data: Data, response: HTTPURLResponse), Error> in
-          return appendTokenAndExecute(accessToken: accessToken)
-        }
+      return appendTokenAndExecute(accessToken: accessToken)
     }
     .catch { error -> AnyPublisher<(data: Data, response: HTTPURLResponse), Error> in
       if self.configuration.refreshTriggerErrors.contains(where: { return $0 == error as? FusionError }){
         return self.retrySynchronizedTokenRefresh()
-          .flatMap {
-            appendTokenAndExecute(accessToken: $0)
+          .flatMap { accessToken -> AnyPublisher<(data: Data, response: HTTPURLResponse), Error> in
+            return appendTokenAndExecute(accessToken: accessToken)
           }
           .eraseToAnyPublisher()
       }
@@ -87,7 +87,18 @@ public final class AuthenticatedWebService: WebService {
   }
 
   private func retrySynchronizedTokenRefresh() -> AnyPublisher<AccessToken, Error> {
-    tokenProvider.invalidateAccessToken()
-    return tokenProvider.reissueAccessToken().eraseToAnyPublisher()
+    return tokenProvider.reissueAccessToken()
+      .subscribe(on: authenticationQueue)
+      .handleEvents(receiveSubscription: { _ in
+        self.authenticationQueue.sync {
+          self.tokenProvider.invalidateAccessToken()
+        }
+      },
+      receiveOutput: { (accessToken) in
+        self.authenticationQueue.sync {
+          self.tokenProvider.accessToken.value = accessToken
+        }
+      })
+      .eraseToAnyPublisher()
   }
 }
