@@ -43,7 +43,10 @@ public struct AuthenticatedWebServiceConfiguration {
 }
 
 public final class AuthenticatedWebService: WebService {
-  private let authenticationQueue = DispatchQueue(label: "com.fusion.authentication.queue")
+  let tokenAccessQueue = DispatchQueue(label: "com.fusion.authentication.queue")
+  let executionQueue = DispatchQueue(label: "com.fusion.execution.queue",
+                                             qos: .userInitiated,
+                                             attributes: .concurrent)
   private let tokenProvider: AuthenticationTokenProvidable
   private let configuration: AuthenticatedWebServiceConfiguration
 
@@ -62,7 +65,9 @@ public final class AuthenticatedWebService: WebService {
 
     func appendTokenAndExecute(accessToken: AccessToken) -> AnyPublisher<(data: Data, response: HTTPURLResponse), Error> {
       urlRequest.setValue(self.configuration.authorizationHeaderScheme.rawValue + accessToken, forHTTPHeaderField: "Authorization")
-      return super.execute(urlRequest: urlRequest).eraseToAnyPublisher()
+      return super.execute(urlRequest: urlRequest)
+        .subscribe(on: executionQueue)
+        .eraseToAnyPublisher()
     }
 
     guard let accessToken = self.tokenProvider.accessToken.value else {
@@ -88,15 +93,16 @@ public final class AuthenticatedWebService: WebService {
 
   private func retrySynchronizedTokenRefresh() -> AnyPublisher<AccessToken, Error> {
     return tokenProvider.reissueAccessToken()
-      .subscribe(on: authenticationQueue)
-      .handleEvents(receiveSubscription: { _ in
-        self.authenticationQueue.sync {
-          self.tokenProvider.invalidateAccessToken()
+      .subscribe(on: executionQueue,
+                 options: DispatchQueue.SchedulerOptions(qos: .userInitiated, flags: .barrier))
+      .handleEvents(receiveSubscription: { [weak self] _ in
+        self?.tokenAccessQueue.sync {
+          self?.tokenProvider.invalidateAccessToken()
         }
       },
-      receiveOutput: { (accessToken) in
-        self.authenticationQueue.sync {
-          self.tokenProvider.accessToken.value = accessToken
+      receiveOutput: { [weak self] (accessToken) in
+        self?.tokenAccessQueue.sync {
+          self?.tokenProvider.accessToken.value = accessToken
         }
       })
       .eraseToAnyPublisher()
