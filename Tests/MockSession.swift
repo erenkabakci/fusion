@@ -32,9 +32,9 @@ open class MockSession: SessionPublisherProtocol {
   private(set) var methodCallStack: [String] = []
   private(set) var finalUrlRequest: URLRequest?
   
-  public func dataTaskPublisher(for urlRequest: URLRequest) -> AnyPublisher<(data: Data, response: URLResponse), Error> {
+  public func dataTaskPublisher(request: URLRequest) -> AnyPublisher<(data: Data, response: URLResponse), Error> {
     methodCallStack.append(#function)
-    finalUrlRequest = urlRequest
+    finalUrlRequest = request
     return Deferred {
       Future<(data: Data, response: URLResponse), Error> { promise in
         usleep(20)
@@ -45,7 +45,7 @@ open class MockSession: SessionPublisherProtocol {
                                             httpVersion: nil,
                                             headerFields: nil)!)))
         } else if let errorResponse = self.result?.1 {
-          promise(.failure(NetworkError.urlError(errorResponse)))
+          promise(.failure(errorResponse))
         }
       }
     }.eraseToAnyPublisher()

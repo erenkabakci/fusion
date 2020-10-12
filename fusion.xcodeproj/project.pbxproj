@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A60170F2530AF0A00B62EEF /* WebServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A60170E2530AF0A00B62EEF /* WebServiceTests.swift */; };
 		3A6CB096252768AB002FDC82 /* Publisher+WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6CB095252768AB002FDC82 /* Publisher+WebService.swift */; };
 		3A6CB09825277886002FDC82 /* ResponseCarrier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6CB09725277886002FDC82 /* ResponseCarrier.swift */; };
 		3A71BE6823F2B372009D092E /* HttpHeaderModifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE6723F2B372009D092E /* HttpHeaderModifiable.swift */; };
-		3A71BE6A23F3489C009D092E /* WebServiceHappyPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE6923F3489C009D092E /* WebServiceHappyPathTests.swift */; };
 		3A71BE6C23F34BCA009D092E /* MockSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE6B23F34BCA009D092E /* MockSession.swift */; };
 		3A71BE6E23F3504F009D092E /* SampleResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE6D23F3504F009D092E /* SampleResponse.swift */; };
 		3A71BE7123F35911009D092E /* WebServiceHttpStatusCodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE7023F35911009D092E /* WebServiceHttpStatusCodeTests.swift */; };
@@ -38,10 +38,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3A60170E2530AF0A00B62EEF /* WebServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebServiceTests.swift; sourceTree = "<group>"; };
 		3A6CB095252768AB002FDC82 /* Publisher+WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+WebService.swift"; sourceTree = "<group>"; };
 		3A6CB09725277886002FDC82 /* ResponseCarrier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseCarrier.swift; sourceTree = "<group>"; };
 		3A71BE6723F2B372009D092E /* HttpHeaderModifiable.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = HttpHeaderModifiable.swift; sourceTree = "<group>"; tabWidth = 2; };
-		3A71BE6923F3489C009D092E /* WebServiceHappyPathTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = WebServiceHappyPathTests.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3A71BE6B23F34BCA009D092E /* MockSession.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = MockSession.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3A71BE6D23F3504F009D092E /* SampleResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleResponse.swift; sourceTree = "<group>"; };
 		3A71BE7023F35911009D092E /* WebServiceHttpStatusCodeTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = WebServiceHttpStatusCodeTests.swift; sourceTree = "<group>"; tabWidth = 2; };
@@ -83,8 +83,8 @@
 		3A71BE6F23F358E8009D092E /* WebService */ = {
 			isa = PBXGroup;
 			children = (
+				3A60170E2530AF0A00B62EEF /* WebServiceTests.swift */,
 				3A7DD7C923F449C9001AED72 /* AuthenticatedWebService */,
-				3A71BE6923F3489C009D092E /* WebServiceHappyPathTests.swift */,
 				3A71BE7023F35911009D092E /* WebServiceHttpStatusCodeTests.swift */,
 				3A71BE7223F35DA4009D092E /* WebServiceStreamTests.swift */,
 			);
@@ -296,7 +296,7 @@
 			files = (
 				3A71BE7123F35911009D092E /* WebServiceHttpStatusCodeTests.swift in Sources */,
 				3A71BE6C23F34BCA009D092E /* MockSession.swift in Sources */,
-				3A71BE6A23F3489C009D092E /* WebServiceHappyPathTests.swift in Sources */,
+				3A60170F2530AF0A00B62EEF /* WebServiceTests.swift in Sources */,
 				3AC7B89B23FD695500BCE0FE /* AsyncTokenRefreshTests.swift in Sources */,
 				3A71BE7323F35DA4009D092E /* WebServiceStreamTests.swift in Sources */,
 				3A7DD7CB23F449F2001AED72 /* AuthenticatedWebServiceTests.swift in Sources */,

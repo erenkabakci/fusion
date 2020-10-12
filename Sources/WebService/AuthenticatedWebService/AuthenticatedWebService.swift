@@ -88,6 +88,7 @@ public final class AuthenticatedWebService: WebService {
       }
       return Fail<(data: Data, response: HTTPURLResponse), Error>(error: error).eraseToAnyPublisher()
     }
+    .receive(on: DispatchQueue.main)
     .eraseToAnyPublisher()
   }
 

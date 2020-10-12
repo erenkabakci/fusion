@@ -57,6 +57,7 @@ public class WebService: WebServiceExecutable, HttpHeaderModifiable {
           })
       }
     }
+    .receive(on: DispatchQueue.main)
     .eraseToAnyPublisher()
   }
 }
