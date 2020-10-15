@@ -69,6 +69,27 @@ class WebServiceTests: XCTestCase {
     waitForExpectations(timeout: 0.5)
   }
 
+  func test_givenDeferredRequest_whenReceivesValue_shouldComplete() {
+    let request = URLRequest(url: URL(string: "foo.com")!)
+    session.result = ((Data(), 205), nil)
+
+    let expectation = self.expectation(description: "Completion after receiving a single value has failed")
+
+    webService.execute(urlRequest: request)
+      .sink(receiveCompletion: { completion in
+        if case .failure = completion {
+          XCTFail("Should not fail when expecting value")
+        } else {
+          expectation.fulfill()
+        }
+      }, receiveValue: { _ in
+        XCTAssertEqual(self.session.methodCallStack, ["dataTaskPublisher(request:)"])
+      })
+      .store(in: &subscriptions)
+
+    waitForExpectations(timeout: 0.5)
+  }
+
   func test_givenDeferredRequest_whenRetried_shouldExecuteAgain() {
     let request = URLRequest(url: URL(string: "foo.com")!)
     session.result = (nil, URLError(.cancelled))
