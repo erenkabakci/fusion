@@ -18,6 +18,7 @@
 		3A7DD7CB23F449F2001AED72 /* AuthenticatedWebServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7DD7CA23F449F2001AED72 /* AuthenticatedWebServiceTests.swift */; };
 		3AC7B89B23FD695500BCE0FE /* AsyncTokenRefreshTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC7B89A23FD695500BCE0FE /* AsyncTokenRefreshTests.swift */; };
 		3AE1AA10253499D5000C3DEB /* Publisher+HTTPStatusCodeMappingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE1AA0F253499D5000C3DEB /* Publisher+HTTPStatusCodeMappingTests.swift */; };
+		3AE1AA1A2538D4DE000C3DEB /* Publisher+DecodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE1AA192538D4DE000C3DEB /* Publisher+DecodableTests.swift */; };
 		3AE34B2123F2056B00B453D7 /* fusion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AE34B1723F2056B00B453D7 /* fusion.framework */; };
 		3AE34B3223F211B500B453D7 /* SessionPublisherProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3123F211B500B453D7 /* SessionPublisherProtocol.swift */; };
 		3AE34B3423F2124100B453D7 /* FusionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE34B3323F2124100B453D7 /* FusionError.swift */; };
@@ -48,6 +49,7 @@
 		3A7DD7CA23F449F2001AED72 /* AuthenticatedWebServiceTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = AuthenticatedWebServiceTests.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3AC7B89A23FD695500BCE0FE /* AsyncTokenRefreshTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = AsyncTokenRefreshTests.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3AE1AA0F253499D5000C3DEB /* Publisher+HTTPStatusCodeMappingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+HTTPStatusCodeMappingTests.swift"; sourceTree = "<group>"; };
+		3AE1AA192538D4DE000C3DEB /* Publisher+DecodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+DecodableTests.swift"; sourceTree = "<group>"; };
 		3AE34B1723F2056B00B453D7 /* fusion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = fusion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3AE34B1B23F2056B00B453D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3AE34B2023F2056B00B453D7 /* fusionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = fusionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -122,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				3AE1AA0F253499D5000C3DEB /* Publisher+HTTPStatusCodeMappingTests.swift */,
+				3AE1AA192538D4DE000C3DEB /* Publisher+DecodableTests.swift */,
 				3A71BE6F23F358E8009D092E /* WebService */,
 				3AE34B2723F2056B00B453D7 /* Info.plist */,
 				3A71BE6B23F34BCA009D092E /* MockSession.swift */,
@@ -294,6 +297,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AE1AA1A2538D4DE000C3DEB /* Publisher+DecodableTests.swift in Sources */,
 				3A71BE6C23F34BCA009D092E /* MockSession.swift in Sources */,
 				3A60170F2530AF0A00B62EEF /* WebServiceTests.swift in Sources */,
 				3AC7B89B23FD695500BCE0FE /* AsyncTokenRefreshTests.swift in Sources */,
