@@ -33,7 +33,7 @@ class WebServiceTests: XCTestCase {
   private let encoder = JSONEncoder()
 
   override func setUpWithError() throws {
-    super.setUp()
+    try super.setUpWithError()
     session = MockSession()
     webService = WebService(urlSession: session)
   }
