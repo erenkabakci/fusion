@@ -38,7 +38,7 @@ public class WebService: WebServiceExecutable, HttpHeaderModifiable {
 
   public func execute(urlRequest: URLRequest) -> AnyPublisher<(data: Data, response: HTTPURLResponse), Error> {
     var urlRequest = urlRequest
-    urlRequest.appendAdditionalHeaders(headers: self.defaultHttpHeaders)
+    urlRequest.appendAdditionalHeaders(headers: defaultHttpHeaders)
 
     return Deferred {
       Future { promise in

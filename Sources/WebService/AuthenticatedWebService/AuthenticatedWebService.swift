@@ -33,20 +33,20 @@ public enum AuthorizationHeaderScheme: String {
 
 public struct AuthenticatedWebServiceConfiguration {
   let authorizationHeaderScheme: AuthorizationHeaderScheme
-  let refreshTriggerErrors: [FusionError]
+  let refreshTriggerStatusCodes: [Int]
 
   public init(authorizationHeaderScheme: AuthorizationHeaderScheme = .none,
-              refreshTriggerErrors: [FusionError] = [FusionError.unauthorized()]) {
+              refreshTriggerStatusCodes: [Int] = [401, 403]) {
     self.authorizationHeaderScheme = authorizationHeaderScheme
-    self.refreshTriggerErrors = refreshTriggerErrors
+    self.refreshTriggerStatusCodes = refreshTriggerStatusCodes
   }
 }
 
 public final class AuthenticatedWebService: WebService {
   let tokenAccessQueue = DispatchQueue(label: "com.fusion.authentication.queue")
   let executionQueue = DispatchQueue(label: "com.fusion.execution.queue",
-                                             qos: .userInitiated,
-                                             attributes: .concurrent)
+                                     qos: .userInitiated,
+                                     attributes: .concurrent)
   private let tokenProvider: AuthenticationTokenProvidable
   private let configuration: AuthenticatedWebServiceConfiguration
 
@@ -71,22 +71,27 @@ public final class AuthenticatedWebService: WebService {
     }
 
     guard let accessToken = self.tokenProvider.accessToken.value else {
-      return Fail<(data: Data, response: HTTPURLResponse), Error>(error: FusionError.unauthorized())
-        .eraseToAnyPublisher()
+      return Deferred {
+        Fail<(data: Data, response: HTTPURLResponse), Error>(error: FusionError.unauthorized())
+      }
+      .receive(on: DispatchQueue.main)
+      .eraseToAnyPublisher()
     }
 
     return Deferred {
       return appendTokenAndExecute(accessToken: accessToken)
-    }
-    .catch { error -> AnyPublisher<(data: Data, response: HTTPURLResponse), Error> in
-      if self.configuration.refreshTriggerErrors.contains(where: { return $0 == error as? FusionError }){
-        return self.retrySynchronizedTokenRefresh()
-          .flatMap { accessToken -> AnyPublisher<(data: Data, response: HTTPURLResponse), Error> in
-            return appendTokenAndExecute(accessToken: accessToken)
+        .flatMap { output -> AnyPublisher<(data: Data, response: HTTPURLResponse), Error> in
+          if self.configuration.refreshTriggerStatusCodes.contains(where: { return $0 == output.response.statusCode }){
+            return self.retrySynchronizedTokenRefresh()
+              .flatMap { accessToken -> AnyPublisher<(data: Data, response: HTTPURLResponse), Error> in
+                return appendTokenAndExecute(accessToken: accessToken)
+              }
+              .eraseToAnyPublisher()
           }
-          .eraseToAnyPublisher()
-      }
-      return Fail<(data: Data, response: HTTPURLResponse), Error>(error: error).eraseToAnyPublisher()
+          return Just<(data: Data, response: HTTPURLResponse)>(output)
+            .setFailureType(to: Error.self)
+            .eraseToAnyPublisher()
+        }
     }
     .receive(on: DispatchQueue.main)
     .eraseToAnyPublisher()
