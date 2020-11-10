@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,9 +13,7 @@
 		3A71BE6823F2B372009D092E /* HttpHeaderModifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE6723F2B372009D092E /* HttpHeaderModifiable.swift */; };
 		3A71BE6C23F34BCA009D092E /* MockSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE6B23F34BCA009D092E /* MockSession.swift */; };
 		3A71BE6E23F3504F009D092E /* SampleResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A71BE6D23F3504F009D092E /* SampleResponse.swift */; };
-		3A7DD7C823F441C9001AED72 /* EntwineTest in Frameworks */ = {isa = PBXBuildFile; productRef = 3A7DD7C723F441C9001AED72 /* EntwineTest */; };
 		3A7DD7CB23F449F2001AED72 /* AuthenticatedWebServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7DD7CA23F449F2001AED72 /* AuthenticatedWebServiceTests.swift */; };
-		3AC7B89B23FD695500BCE0FE /* AsyncTokenRefreshTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC7B89A23FD695500BCE0FE /* AsyncTokenRefreshTests.swift */; };
 		3AE1AA10253499D5000C3DEB /* Publisher+HTTPStatusCodeMappingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE1AA0F253499D5000C3DEB /* Publisher+HTTPStatusCodeMappingTests.swift */; };
 		3AE1AA1A2538D4DE000C3DEB /* Publisher+DecodableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE1AA192538D4DE000C3DEB /* Publisher+DecodableTests.swift */; };
 		3AE34B2123F2056B00B453D7 /* fusion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AE34B1723F2056B00B453D7 /* fusion.framework */; };
@@ -45,7 +43,6 @@
 		3A71BE6B23F34BCA009D092E /* MockSession.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = MockSession.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3A71BE6D23F3504F009D092E /* SampleResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleResponse.swift; sourceTree = "<group>"; };
 		3A7DD7CA23F449F2001AED72 /* AuthenticatedWebServiceTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = AuthenticatedWebServiceTests.swift; sourceTree = "<group>"; tabWidth = 2; };
-		3AC7B89A23FD695500BCE0FE /* AsyncTokenRefreshTests.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = AsyncTokenRefreshTests.swift; sourceTree = "<group>"; tabWidth = 2; };
 		3AE1AA0F253499D5000C3DEB /* Publisher+HTTPStatusCodeMappingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+HTTPStatusCodeMappingTests.swift"; sourceTree = "<group>"; };
 		3AE1AA192538D4DE000C3DEB /* Publisher+DecodableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+DecodableTests.swift"; sourceTree = "<group>"; };
 		3AE34B1723F2056B00B453D7 /* fusion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = fusion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -73,7 +70,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3AE34B2123F2056B00B453D7 /* fusion.framework in Frameworks */,
-				3A7DD7C823F441C9001AED72 /* EntwineTest in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,7 +89,6 @@
 			isa = PBXGroup;
 			children = (
 				3A7DD7CA23F449F2001AED72 /* AuthenticatedWebServiceTests.swift */,
-				3AC7B89A23FD695500BCE0FE /* AsyncTokenRefreshTests.swift */,
 			);
 			path = AuthenticatedWebService;
 			sourceTree = "<group>";
@@ -208,7 +203,6 @@
 			);
 			name = fusionTests;
 			packageProductDependencies = (
-				3A7DD7C723F441C9001AED72 /* EntwineTest */,
 			);
 			productName = fusionTests;
 			productReference = 3AE34B2023F2056B00B453D7 /* fusionTests.xctest */;
@@ -244,7 +238,6 @@
 			);
 			mainGroup = 3AE34B0D23F2056B00B453D7;
 			packageReferences = (
-				3A7DD7C623F441C9001AED72 /* XCRemoteSwiftPackageReference "Entwine" */,
 			);
 			productRefGroup = 3AE34B1823F2056B00B453D7 /* Products */;
 			projectDirPath = "";
@@ -297,7 +290,6 @@
 				3AE1AA1A2538D4DE000C3DEB /* Publisher+DecodableTests.swift in Sources */,
 				3A71BE6C23F34BCA009D092E /* MockSession.swift in Sources */,
 				3A60170F2530AF0A00B62EEF /* WebServiceTests.swift in Sources */,
-				3AC7B89B23FD695500BCE0FE /* AsyncTokenRefreshTests.swift in Sources */,
 				3AE1AA10253499D5000C3DEB /* Publisher+HTTPStatusCodeMappingTests.swift in Sources */,
 				3A7DD7CB23F449F2001AED72 /* AuthenticatedWebServiceTests.swift in Sources */,
 				3A71BE6E23F3504F009D092E /* SampleResponse.swift in Sources */,
@@ -454,7 +446,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fusion;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -481,7 +473,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.fusion;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -560,25 +552,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		3A7DD7C623F441C9001AED72 /* XCRemoteSwiftPackageReference "Entwine" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/tcldr/Entwine.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.8.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		3A7DD7C723F441C9001AED72 /* EntwineTest */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3A7DD7C623F441C9001AED72 /* XCRemoteSwiftPackageReference "Entwine" */;
-			productName = EntwineTest;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3AE34B0E23F2056B00B453D7 /* Project object */;
 }
