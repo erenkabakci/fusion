@@ -37,7 +37,6 @@ open class MockSession: SessionPublisherProtocol {
     finalUrlRequest = request
     return Deferred {
       Future<(data: Data, response: URLResponse), Error> { promise in
-        usleep(20)
         if let successResponse = self.result?.0 {
           promise(.success((successResponse.0,
                             HTTPURLResponse(url: URL(string: "foo.com")!,

@@ -27,7 +27,6 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
-      enableThreadSanitizer = "YES"
       codeCoverageEnabled = "YES">
       <Testables>
          <TestableReference
@@ -40,11 +39,6 @@
                BlueprintName = "fusionTests"
                ReferencedContainer = "container:fusion.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "AuthenticatedWebServiceTests/test_givenAuthenticatedWebService_whenContinousRequestsFired_thenShouldNotRaceForTokenRefresh()">
-               </Test>
-            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>
