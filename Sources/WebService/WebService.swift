@@ -25,12 +25,7 @@
 import Combine
 import Foundation
 
-open class WebService:
-  WebServiceExecutable,
-  HttpHeaderModifiable,
-  RawResponseRepresentable,
-  StatusCodeResolvable,
-CustomDecodable{
+public class WebService: WebServiceExecutable, HttpHeaderModifiable {
   public var defaultHttpHeaders: [String : String] = [:]
   public let jsonDecoder: JSONDecoder = JSONDecoder()
   private let session: SessionPublisherProtocol
@@ -41,99 +36,29 @@ CustomDecodable{
     session = urlSession
   }
 
-  public func rawResponse(urlRequest: URLRequest) -> AnyPublisher<(data: Data, response: HTTPURLResponse), Error> {
-    session.dataTaskPublisher(for: urlRequest)
-      .flatMap { output -> AnyPublisher<(data: Data, response: HTTPURLResponse), Error> in
-        guard let httpResponse = output.response as? HTTPURLResponse else {
-          return Fail(error: NetworkError.unknown).eraseToAnyPublisher()
-        }
-        return CurrentValueSubject((output.data, httpResponse)).eraseToAnyPublisher()
-    }
-    .receive(on: DispatchQueue.main)
-    .eraseToAnyPublisher()
-  }
+  public func execute(urlRequest: URLRequest) -> AnyPublisher<(data: Data, response: HTTPURLResponse), Error> {
+    var urlRequest = urlRequest
+    urlRequest.appendAdditionalHeaders(headers: defaultHttpHeaders)
 
-  public func execute<T>(urlRequest: URLRequest) -> AnyPublisher<T, Error> where T : Decodable {
-    Deferred {
-      Future { [weak self] promise in
-        guard let self = self else {
-          promise(.failure(NetworkError.unknown))
-          return
-        }
-
-        var urlRequest = urlRequest
-        urlRequest.appendAdditionalHeaders(headers: self.defaultHttpHeaders)
-
-        _ = self.rawResponse(urlRequest: urlRequest)
-        .subscribe(on: DispatchQueue.global())
-          .tryMap {
-            try self.mapHttpResponseCodes(output: $0)
-
-            if let data = $0.data as? T {
-              return data
+    return Deferred {
+      Future { promise in
+        _ = self.session.dataTaskPublisher(request: urlRequest)
+          .sink(receiveCompletion: {
+            if case let .failure(error) = $0 {
+              promise(.failure(error))
             }
-            return try self.decode(data: $0.data, type: T.self)
-        }
-        .sink(receiveCompletion: {
-          if case let .failure(error) = $0 {
-            promise(.failure(error))
-          }
-        },
-              receiveValue: { promise(.success($0)) })
+          },
+                receiveValue: { value in
+                  guard let httpUrlResponse = value.response as? HTTPURLResponse else {
+                    promise(.failure(FusionError.corruptMetaData))
+                    return
+                  }
+                  promise(.success((value.data, httpUrlResponse)))
+          })
       }
     }
     .receive(on: DispatchQueue.main)
     .eraseToAnyPublisher()
-  }
-
-  public func execute(urlRequest: URLRequest) -> AnyPublisher<Void, Error> {
-    Deferred {
-      Future { [weak self] promise in
-        guard let self = self else {
-          promise(.failure(NetworkError.unknown))
-          return
-        }
-
-        var urlRequest = urlRequest
-        urlRequest.appendAdditionalHeaders(headers: self.defaultHttpHeaders)
-
-        _ = self.rawResponse(urlRequest: urlRequest)
-            .subscribe(on: DispatchQueue.global())
-          .tryMap {
-            try self.mapHttpResponseCodes(output: $0)
-            return
-        }
-        .sink(receiveCompletion: {
-          if case let .failure(error) = $0 {
-            promise(.failure(error))
-          }
-        },
-              receiveValue: { promise(.success($0)) })
-      }
-    }
-    .receive(on: DispatchQueue.main)
-    .eraseToAnyPublisher()
-  }
-
-  open func mapHttpResponseCodes(output: (data:Data, response: HTTPURLResponse)) throws {
-    switch output.response.statusCode {
-    case 200 ... 399:
-      break
-    case 401:
-      throw NetworkError.unauthorized
-    case 403:
-      throw NetworkError.forbidden
-    default:
-      throw NetworkError.generic(output.response.statusCode)
-    }
-  }
-
-  open func decode<T>(data: Data, type _: T.Type) throws -> T where T : Decodable {
-    do {
-      return try jsonDecoder.decode(T.self, from: data)
-    } catch {
-      throw NetworkError.parsingFailure
-    }
   }
 }
 

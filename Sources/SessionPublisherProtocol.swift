@@ -26,14 +26,14 @@ import Combine
 import Foundation
 
 public protocol SessionPublisherProtocol: AnyObject {
-  func dataTaskPublisher(for request: URLRequest) -> AnyPublisher<(data: Data, response: URLResponse), Error>
+  func dataTaskPublisher(request: URLRequest) -> AnyPublisher<(data: Data, response: URLResponse), Error>
 }
 
 extension URLSession: SessionPublisherProtocol {
-  public func dataTaskPublisher(for request: URLRequest) -> AnyPublisher<(data: Data, response: URLResponse), Error> {
+  public func dataTaskPublisher(request: URLRequest) -> AnyPublisher<(data: Data, response: URLResponse), Error> {
     self.dataTaskPublisher(for: request)
     .subscribe(on: DispatchQueue.global())
-    .mapError { NetworkError.urlError($0) }
+    .mapError { $0 }
     .eraseToAnyPublisher()
   }
 }

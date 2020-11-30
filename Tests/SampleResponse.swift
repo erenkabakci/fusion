@@ -24,6 +24,6 @@
 
 import Foundation
 
-struct SampleResponse: Codable {
+struct SampleResponse: Codable, Equatable {
     let id: String
 }

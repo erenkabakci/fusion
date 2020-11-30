@@ -1,5 +1,5 @@
 //
-//  NetworkError.swift
+//  ResponseCarrier.swift
 //  fusion
 //
 //  Copyright (c) 2020 Eren Kabakçı
@@ -24,15 +24,13 @@
 
 import Foundation
 
-public typealias HttpStatusCode = Int
+public protocol ResponseCarrierProtocol {
+  associatedtype T
+  var body: T { get }
+  var metadata: HTTPURLResponse { get }
+}
 
-public enum NetworkError: Error, Equatable {
-  case urlError(URLError?)
-  case parsingFailure
-  case corruptUrl
-  case timeout
-  case unauthorized
-  case forbidden
-  case generic(HttpStatusCode)
-  case unknown
+public struct ResponseCarrier<T>: ResponseCarrierProtocol {
+  public let body: T
+  public let metadata: HTTPURLResponse
 }

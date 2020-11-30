@@ -1,5 +1,5 @@
 //
-//  ThreadSafePropertyWrapper.swift
+//  NetworkError.swift
 //  fusion
 //
 //  Copyright (c) 2020 Eren Kabakçı
@@ -24,21 +24,9 @@
 
 import Foundation
 
-@propertyWrapper
-public struct ThreadSafe<Value> {
-    private let queue = DispatchQueue(label: "atomicAccess")
-    private var value: Value
-
-    public init(wrappedValue: Value) {
-        self.value = wrappedValue
-    }
-
-    public var wrappedValue: Value {
-        get {
-            queue.sync { value }
-        }
-        set {
-            queue.sync { value = newValue }
-        }
-    }
+public enum FusionError: Error, Equatable {
+  case corruptMetaData
+  case unauthorized(metadata: HTTPURLResponse? = nil)
+  case forbidden(metadata: HTTPURLResponse? = nil)
+  case generic(metadata: HTTPURLResponse)
 }

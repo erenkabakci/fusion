@@ -35,3 +35,14 @@ public protocol AuthenticationTokenProvidable: AnyObject {
   func invalidateAccessToken()
   func invalidateRefreshToken()
 }
+
+extension AuthenticationTokenProvidable {
+  func invalidateRefreshToken() {
+    refreshToken.value = nil
+    accessToken.value = nil
+  }
+
+  func invalidateAccesstoken() {
+    accessToken.value = nil
+  }
+}
